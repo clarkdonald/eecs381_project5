@@ -52,7 +52,7 @@ Controller::~Controller()
 void
 Controller::run()
 {
-    shared_ptr<View> view_ptr(new View);
+    shared_ptr<View> view_ptr(make_shared<View>());
     g_Model_ptr->attach(view_ptr);
 
     // command loop to accept input from users

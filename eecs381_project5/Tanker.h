@@ -21,6 +21,7 @@ resistance 0, cargo capacity 1000 tons, initial cargo is 0 tons.
 
 #include "Ship.h"
 #include <string>
+#include <memory>
 
 class Island;
 
@@ -47,8 +48,8 @@ class Tanker : public Ship
       // if they are the same, leave at the set values,
       // and throw Error("Load and unload cargo destinations are the same!")
       // if both destinations are now set, start the cargo cycle
-      void set_load_destination(Island*) override;
-      void set_unload_destination(Island*) override;
+      void set_load_destination(std::shared_ptr<Island>) override;
+      void set_unload_destination(std::shared_ptr<Island>) override;
 
       // when told to stop, clear the cargo destinations and stop
       void stop() override;
@@ -59,8 +60,8 @@ class Tanker : public Ship
   private:
       double cargo;
       double cargo_capacity;
-      Island *load_destination;
-      Island *unload_destination;
+      std::shared_ptr<Island> load_destination;
+      std::shared_ptr<Island> unload_destination;
 
       enum Tanker_State_e
       {

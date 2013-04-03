@@ -25,10 +25,7 @@
 #include <vector>
 #include <map>
 #include <string>
-
-// Declare the global model pointer
-class Model;
-extern Model* g_Model_ptr;
+#include <memory>
 
 // incomplete forward declarations
 struct Point;
@@ -40,11 +37,8 @@ class View;
 class Model
 {
   public:
-      // create the initial objects, output constructor message
-      Model();
-
-      // destroy all objects, output destructor message
-      ~Model();
+      // force Model as a singleton object
+      static Model& get_Instance();
 
       // forbid copy/move, construction/assignment
       Model(const Model&) = delete;
@@ -65,10 +59,10 @@ class Model
       bool is_island_present(const std::string& name) const;
 
       // add a new island to the lists
-      void add_island(Island*);
+      void add_island(std::shared_ptr<Island>);
 
       // will throw Error("Island not found!") if no island of that name
-      Island* get_island_ptr(const std::string& name) const;
+      std::shared_ptr<Island> get_island_ptr(const std::string& name) const;
 
       // is there such an ship?
       bool is_ship_present(const std::string& name) const;
@@ -105,9 +99,15 @@ class Model
       void notify_gone(const std::string& name);
 
   private:
+      // create the initial objects
+      Model();
+    
+      // prevent accidental deletion
+      ~Model();
+
       int time;
       std::map<std::string, std::shared_ptr<Sim_object>> sim_object_map;
-      std::map<std::string, Island*> island_map;
+      std::map<std::string, std::shared_ptr<Island>> island_map;
       std::map<std::string, std::shared_ptr<Ship>> ship_map;
       std::vector<std::shared_ptr<View>> view_array;
 };

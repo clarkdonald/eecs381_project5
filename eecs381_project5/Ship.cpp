@@ -64,9 +64,7 @@ Ship::is_docked() const
 bool
 Ship::is_afloat() const
 {
-    if (ship_state == SINKING ||
-        ship_state == SUNK    ||
-        ship_state == ON_THE_BOTTOM)
+    if (ship_state == SUNK)
     {
         return false;
     }
@@ -74,17 +72,7 @@ Ship::is_afloat() const
 }
 
 bool
-Ship::is_on_the_bottom() const
-{
-    if (ship_state == ON_THE_BOTTOM)
-    {
-        return true;
-    }
-    return false;
-}
-
-bool
-Ship::can_dock(Island* island_ptr) const
+Ship::can_dock(shared_ptr<Island> island_ptr) const
 {
     if (ship_state == STOPPED &&
         cartesian_distance(island_ptr->get_location(),
@@ -105,8 +93,9 @@ Ship::update()
     {
         if (resistance < 0)
         {
-            ship_state = SINKING;
-            cout << get_name() << " sinking" << endl;
+            ship_state = SUNK;
+            cout << get_name() << " sunk" << endl;
+            g_Model_ptr->notify_gone(get_name());
         }
         else
         {
@@ -137,24 +126,6 @@ Ship::update()
             }
         }
     }
-    else
-    {
-        switch (ship_state)
-        {
-            case SINKING:
-                ship_state = SUNK;
-                g_Model_ptr->notify_gone(get_name());
-                cout << get_name() << " sunk" << endl;
-                break;
-            case SUNK:
-                ship_state = ON_THE_BOTTOM;
-            case ON_THE_BOTTOM:
-                cout << get_name() << " on the bottom" << endl;
-                break;
-            default:
-                break;
-        }
-    }
 }
 
 void
@@ -166,20 +137,7 @@ Ship::describe() const
     // output for ship that is not afloat
     if (!is_afloat())
     {
-        switch (ship_state)
-        {
-            case SINKING:
-                cout << " sinking" << endl;
-                break;
-            case SUNK:
-                cout << " sunk" << endl;
-                break;
-            case ON_THE_BOTTOM:
-                cout << " on the bottom" << endl;
-                break;
-            default:
-                break;
-        }
+        cout << " sunk" << endl;
     }
     // output for ship that is afloat
     else
@@ -256,7 +214,7 @@ Ship::stop()
 }
 
 void
-Ship::dock(Island *island_ptr)
+Ship::dock(shared_ptr<Island> island_ptr)
 {
     if (is_moving() || !can_dock(island_ptr))
     {
@@ -289,13 +247,13 @@ Ship::refuel()
 }
 
 void
-Ship::set_load_destination(Island *island_ptr)
+Ship::set_load_destination(shared_ptr<Island> island_ptr)
 {
     throw Error("Cannot load at a destination!");
 }
 
 void
-Ship::set_unload_destination(Island *island_ptr)
+Ship::set_unload_destination(shared_ptr<Island> island_ptr)
 {
     throw Error("Cannot unload at a destination!");
 }

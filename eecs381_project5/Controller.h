@@ -9,6 +9,7 @@
 
 #include <map>
 #include <string>
+#include <memory>
 
 class View;
 class Ship;
@@ -54,9 +55,12 @@ class Controller
       std::string receive_and_check_ship();
      
       // maps for ship and model/view commands
-      std::map<std::string, void (Controller::*)(std::shared_ptr<Ship>)> ship_command_map;
-      std::map<std::string, void (Controller::*)()> model_command_map;
-      std::map<std::string, void (Controller::*)(std::shared_ptr<View>)> view_command_map;
+      std::map<std::string,
+               void (Controller::*)(std::shared_ptr<Ship>)> ship_command_map;
+      std::map<std::string,
+               void (Controller::*)()> model_command_map;
+      std::map<std::string,
+               void (Controller::*)(std::shared_ptr<View>)> view_command_map;
 };
         
 #endif

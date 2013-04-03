@@ -11,6 +11,7 @@
 
 #include "Geometry.h"
 #include <string>
+#include <memory>
 
 class Ship;
 

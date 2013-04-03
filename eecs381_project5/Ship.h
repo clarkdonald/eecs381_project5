@@ -26,6 +26,7 @@
 #include "Sim_object.h"
 #include "Track_base.h"
 #include <string>
+#include <memory>
 
 // forward declaration
 class Island;
@@ -69,11 +70,8 @@ class Ship : public Sim_object
       // (not in process of sinking), false if not
       bool is_afloat() const;
 
-      // Return true if ship is on the bottom
-      bool is_on_the_bottom() const;
-
       // Return true if Stopped and within 0.1 nm of the island
-      bool can_dock(Island*) const;
+      bool can_dock(std::shared_ptr<Island>) const;
 
       // Update the state of the Ship
       void update() override;
@@ -100,7 +98,7 @@ class Ship : public Sim_object
       // dock at an Island -
       // set our position = Island's position, go into Docked state
       // may throw Error("Can't dock!");
-      virtual void dock(Island *);
+      virtual void dock(std::shared_ptr<Island>);
 
       // Refuel - must already be docked at an island;
       // fill takes as much as possible
@@ -109,10 +107,10 @@ class Ship : public Sim_object
 
       // These functions throw an Error exception for this class
       // will always throw Error("Cannot load at a destination!");
-      virtual void set_load_destination(Island *);
+      virtual void set_load_destination(std::shared_ptr<Island>);
 
       // will always throw Error("Cannot unload at a destination!");
-      virtual void set_unload_destination(Island *);
+      virtual void set_unload_destination(std::shared_ptr<Island>);
 
       // will always throw Error("Cannot attack!");
       virtual void attack(std::shared_ptr<Ship>);
@@ -130,7 +128,7 @@ class Ship : public Sim_object
 
       // return pointer to the Island currently docked at,
       // or nullptr if not docked
-      Island* get_docked_Island() const
+      std::shared_ptr<Island> get_docked_Island() const
           {return docked_island;}
 
   private:
@@ -141,7 +139,7 @@ class Ship : public Sim_object
       double fuel_consumption;
       int resistance;
       Point destination;
-      Island *docked_island;
+      std::shared_ptr<Island> docked_island;
 
       enum Ship_State_e
       {
@@ -150,9 +148,7 @@ class Ship : public Sim_object
           MOVING_TO_POSITION,
           MOVING_ON_COURSE,
           DEAD_IN_THE_WATER,
-          SINKING,
           SUNK,
-          ON_THE_BOTTOM
       } ship_state;
 
       // Updates position, fuel, and movement_state,

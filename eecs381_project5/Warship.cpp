@@ -20,7 +20,6 @@ Warship::Warship(const string& name_,
          resistance_),
     firepower(firepower_),
     maximum_range(maximum_range_),
-    target_ptr(nullptr),
     warship_state(NOT_ATTACKING)
 {
     cout << "Warship " << get_name() << " constructed" << endl;
@@ -38,7 +37,9 @@ Warship::update()
 
     if (is_attacking())
     {
-        if (!is_afloat() || !target_ptr->is_afloat())
+        shared_ptr<Ship> target = target_ptr.lock();
+        
+        if (!is_afloat() || !target || !target->is_afloat())
         {
             stop_attack();
         }
@@ -66,7 +67,7 @@ Warship::attack(shared_ptr<Ship> target_ptr_)
     warship_state = ATTACKING;
 
     cout << get_name() << " will attack "
-         << target_ptr->get_name() << endl;
+         << target_ptr_->get_name() << endl;
 }
 
 void
@@ -78,7 +79,7 @@ Warship::stop_attack()
     }
 
     warship_state = NOT_ATTACKING;
-    target_ptr    = nullptr;
+    target_ptr.reset();
 
     cout << get_name() << " stopping attack" << endl;
 }
@@ -87,10 +88,19 @@ void
 Warship::describe() const
 {
     Ship::describe();
+    
+    shared_ptr<Ship> target = target_ptr.lock();
 
     if (is_attacking())
     {
-        cout << "Attacking " <<  target_ptr->get_name() << endl;
+        if (!target || !target->is_afloat())
+        {
+            cout << "Attacking absent ship" << endl;
+        }
+        else
+        {
+            cout << "Attacking " <<  target->get_name() << endl;
+        }
     }
 }
 
@@ -108,15 +118,23 @@ Warship::is_attacking() const
 void
 Warship::fire_at_target()
 {
-    cout << get_name() << " fires" << endl;
+    shared_ptr<Ship> target = target_ptr.lock();
+    
+    if (target)
+    {
+        cout << get_name() << " fires" << endl;
 
-    target_ptr->receive_hit(firepower, this);
+        target->receive_hit(firepower, shared_from_this());
+    }
 }
 
 bool
 Warship::target_in_range() const
 {
-    if (cartesian_distance(get_location(), target_ptr->get_location()) >
+    shared_ptr<Ship> target = target_ptr.lock();
+    
+    if (target &&
+        cartesian_distance(get_location(), target->get_location()) >
         maximum_range)
     {
         return false;

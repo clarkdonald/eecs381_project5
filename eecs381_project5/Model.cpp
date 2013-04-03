@@ -10,19 +10,25 @@
 
 using namespace std;
 
-Model* g_Model_ptr;
+Model&
+Model::get_Instance()
+{
+    static Model model;
+    return model;
+}
 
 Model::Model() :
     time(0)
 {
     // create initial set of islands and ships
     // and place them into the appropriate containers
-    sim_object_map["Exxon"]   =
-    island_map["Exxon"]       = new Island("Exxon",Point(10,10),1000,200);
-    sim_object_map["Shell"]   =
-    island_map["Shell"]       = new Island("Shell",Point(0,30),1000,200);
-    sim_object_map["Bermuda"] =
-    island_map["Bermuda"]     = new Island("Bermuda",Point(20,20));
+    shared_ptr<Island> exxon(make_shared<Island>("Exxon",Point(10,10),1000,200));
+    shared_ptr<Island> shell(make_shared<Island>("Shell",Point(0,30),1000,200));
+    shared_ptr<Island> bermuda(make_shared<Island>("Bermuda",Point(20,20)));
+    
+    sim_object_map["Exxon"]   = island_map["Exxon"]   = exxon;
+    sim_object_map["Shell"]   = island_map["Shell"]   = shell;
+    sim_object_map["Bermuda"] = island_map["Bermuda"] = bermuda;
     sim_object_map["Ajax"]    =
     ship_map["Ajax"]          = create_ship("Ajax","Cruiser",Point(15,15));
     sim_object_map["Xerxes"]  =
@@ -68,17 +74,17 @@ Model::is_island_present(const string& name) const
 }
 
 void
-Model::add_island(Island *island_ptr)
+Model::add_island(shared_ptr<Island> island_ptr)
 {
     sim_object_map[island_ptr->get_name()] =
     island_map[island_ptr->get_name()]     = island_ptr;
     island_ptr->broadcast_current_state();
 }
 
-Island*
+shared_ptr<Island>
 Model::get_island_ptr(const string& name) const
 {
-    map<string, Island*>::const_iterator it = island_map.find(name);
+    map<string, shared_ptr<Island>>::const_iterator it = island_map.find(name);
     if (it == island_map.end())
     {
         throw Error("Island not found!");
@@ -132,13 +138,13 @@ Model::update()
              sim_object_map.end(),
              [](pair<string, shared_ptr<Sim_object>> obj){obj.second->update();});
 
-    // find all ships that are On the Bottom and remove
+    // find all ships that are sunk and remove
     list<shared_ptr<Ship>> delete_ship_list;
     for_each(ship_map.begin(),
              ship_map.end(),
              [&delete_ship_list](pair<string, shared_ptr<Ship>> obj)
              {
-                 if (obj.second->is_on_the_bottom())
+                 if (!obj.second->is_afloat())
                  {
                      delete_ship_list.push_back(obj.second);
                  }

@@ -2,9 +2,7 @@
 #include "Island.h"
 #include "Utility.h"
 
-using std::string;
-using std::cout;
-using std::endl;
+using namespace std;
 
 Tanker::Tanker(const std::string& name_, Point position_) :
     Ship(name_, position_, 100., 10., 2., 0),
@@ -43,7 +41,7 @@ Tanker::set_course_and_speed(double course, double speed)
 }
 
 void
-Tanker::set_load_destination(Island *island_ptr)
+Tanker::set_load_destination(shared_ptr<Island> island_ptr)
 {
     if (tanker_state != NO_CARGO_DESTINATION)
     {
@@ -64,7 +62,7 @@ Tanker::set_load_destination(Island *island_ptr)
 }
 
 void
-Tanker::set_unload_destination(Island *island_ptr)
+Tanker::set_unload_destination(shared_ptr<Island> island_ptr)
 {
     if (tanker_state != NO_CARGO_DESTINATION)
     {

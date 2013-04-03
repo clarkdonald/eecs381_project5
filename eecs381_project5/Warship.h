@@ -13,8 +13,9 @@
 
 #include "Ship.h"
 #include <string>
+#include <memory>
 
-class Warship : public Ship
+class Warship : public Ship, public std::enable_shared_from_this<Warship>
 {
   public:
       // initialize, then output constructor message
@@ -55,19 +56,20 @@ class Warship : public Ship
       bool target_in_range() const;
 
       // get the target
-      std::shared_ptr<Ship> get_target() const
+      std::weak_ptr<Ship> get_target() const
           {return target_ptr;}
 
   private:
       int firepower;
       double maximum_range;
-      std::shared_ptr<Ship> target_ptr;
 
       enum Warship_State_e
       {
           ATTACKING,
           NOT_ATTACKING
       } warship_state;
+    
+      std::weak_ptr<Ship> target_ptr;
 };
 
 #endif

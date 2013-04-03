@@ -12,12 +12,12 @@ create_ship(const string& name,
 {
     if (type == "Cruiser")
     {
-        shared_ptr<Ship> return_ship(new Cruiser(name, initial_position));
+        shared_ptr<Ship> return_ship(make_shared<Cruiser>(name, initial_position));
         return return_ship;
     }
     else if (type == "Tanker")
     {
-        shared_ptr<Ship> return_ship(new Tanker(name, initial_position));
+        shared_ptr<Ship> return_ship(make_shared<Tanker>(name, initial_position));
         return return_ship;
     }
     else
