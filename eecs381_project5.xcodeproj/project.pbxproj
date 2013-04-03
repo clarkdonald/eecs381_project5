@@ -22,6 +22,7 @@
 		401856851709079F0028D747 /* Utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856731709079F0028D747 /* Utility.cpp */; };
 		401856861709079F0028D747 /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856751709079F0028D747 /* View.cpp */; };
 		401856871709079F0028D747 /* Warship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856771709079F0028D747 /* Warship.cpp */; };
+		C9A7431D170C039300A324D7 /* Cruise_ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9A7431B170C039200A324D7 /* Cruise_ship.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -69,6 +70,8 @@
 		401856761709079F0028D747 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
 		401856771709079F0028D747 /* Warship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Warship.cpp; sourceTree = "<group>"; };
 		401856781709079F0028D747 /* Warship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Warship.h; sourceTree = "<group>"; };
+		C9A7431B170C039200A324D7 /* Cruise_ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cruise_ship.cpp; sourceTree = "<group>"; };
+		C9A7431C170C039300A324D7 /* Cruise_ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cruise_ship.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +134,8 @@
 				401856771709079F0028D747 /* Warship.cpp */,
 				401856781709079F0028D747 /* Warship.h */,
 				40185651170903B70028D747 /* eecs381_project5.1 */,
+				C9A7431B170C039200A324D7 /* Cruise_ship.cpp */,
+				C9A7431C170C039300A324D7 /* Cruise_ship.h */,
 			);
 			path = eecs381_project5;
 			sourceTree = "<group>";
@@ -200,6 +205,7 @@
 				401856851709079F0028D747 /* Utility.cpp in Sources */,
 				401856861709079F0028D747 /* View.cpp in Sources */,
 				401856871709079F0028D747 /* Warship.cpp in Sources */,
+				C9A7431D170C039300A324D7 /* Cruise_ship.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

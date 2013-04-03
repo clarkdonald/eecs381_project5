@@ -95,7 +95,7 @@ Ship::update()
         {
             ship_state = SUNK;
             cout << get_name() << " sunk" << endl;
-            g_Model_ptr->notify_gone(get_name());
+            Model::get_Instance().notify_gone(get_name());
         }
         else
         {
@@ -106,7 +106,7 @@ Ship::update()
                     calculate_movement();
                     cout << get_name() << " now at "
                          << track_base.get_position() << endl;
-                    g_Model_ptr->notify_location(get_name(),
+                    Model::get_Instance().notify_location(get_name(),
                                                  track_base.get_position());
                     break;
                 case DOCKED:
@@ -173,7 +173,7 @@ Ship::describe() const
 void
 Ship::broadcast_current_state()
 {
-    g_Model_ptr->notify_location(get_name(), get_location());
+    Model::get_Instance().notify_location(get_name(), get_location());
 }
 
 void
@@ -221,7 +221,7 @@ Ship::dock(shared_ptr<Island> island_ptr)
         throw Error("Can't dock!");
     }
     track_base.set_position(island_ptr->get_location());
-    g_Model_ptr->notify_location(get_name(), get_location());
+    Model::get_Instance().notify_location(get_name(), get_location());
     docked_island = island_ptr;
     ship_state    = DOCKED;
     cout << get_name() << " docked at " << island_ptr->get_name() << endl;

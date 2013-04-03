@@ -53,7 +53,7 @@ void
 Controller::run()
 {
     shared_ptr<View> view_ptr(make_shared<View>());
-    g_Model_ptr->attach(view_ptr);
+    Model::get_Instance().attach(view_ptr);
 
     // command loop to accept input from users
     while (true)
@@ -63,7 +63,7 @@ Controller::run()
         map<std::string, void (Controller::*)(shared_ptr<Ship>)>::const_iterator s_command_it;
         map<std::string, void (Controller::*)(shared_ptr<View>)>::const_iterator v_command_it;
 
-        cout << "\nTime " <<  g_Model_ptr->get_time() << ": Enter command: ";
+        cout << "\nTime " <<  Model::get_Instance().get_time() << ": Enter command: ";
         cin >> first_word;
 
         try
@@ -74,7 +74,7 @@ Controller::run()
                 break;
             }
             // ship command
-            else if (g_Model_ptr->is_ship_present(first_word))
+            else if (Model::get_Instance().is_ship_present(first_word))
             {
                 cin >> second_word;
                 if ((s_command_it = ship_command_map.find(second_word)) ==
@@ -82,7 +82,7 @@ Controller::run()
                 {
                     throw Error("Unrecognized command!");
                 }
-                (this->*(s_command_it->second))(g_Model_ptr->get_ship_ptr(first_word));
+                (this->*(s_command_it->second))(Model::get_Instance().get_ship_ptr(first_word));
             }
             // model command
             else if ((m_command_it = model_command_map.find(first_word)) !=
@@ -120,7 +120,7 @@ Controller::run()
     }
 
     // final clean-up before exiting
-    g_Model_ptr->detach(view_ptr);
+    Model::get_Instance().detach(view_ptr);
     cout << "Done" << endl;
 }
 
@@ -180,14 +180,14 @@ Controller::view_show(shared_ptr<View> view_ptr)
 void
 Controller::model_status()
 {
-    g_Model_ptr->describe();
+    Model::get_Instance().describe();
 }
 
 // have all objects update
 void
 Controller::model_go()
 {
-    g_Model_ptr->update();
+    Model::get_Instance().update();
 }
 
 // read name for a new ship
@@ -208,7 +208,7 @@ Controller::model_create()
     {
         throw Error("Name is too short!");
     }
-    if (g_Model_ptr->is_name_in_use(name))
+    if (Model::get_Instance().is_name_in_use(name))
     {
         throw Error("Name is already in use!");
     }
@@ -218,7 +218,7 @@ Controller::model_create()
     {
         throw Error("Expected a double!");
     }
-    g_Model_ptr->add_ship(create_ship(name, type, Point(x,y)));
+    Model::get_Instance().add_ship(create_ship(name, type, Point(x,y)));
 }
 
 // read compass heading and speed (double)
@@ -265,7 +265,7 @@ Controller::ship_destination(shared_ptr<Ship>ship_ptr)
     string name  = receive_and_check_island();
     double speed = receive_and_check_speed();
     ship_ptr->set_destination_position_and_speed(
-        g_Model_ptr->get_island_ptr(name)->get_location(),
+        Model::get_Instance().get_island_ptr(name)->get_location(),
         speed);
 }
 
@@ -275,7 +275,7 @@ void
 Controller::ship_load_at(shared_ptr<Ship>ship_ptr)
 {
     string name = receive_and_check_island();
-    ship_ptr->set_load_destination(g_Model_ptr->get_island_ptr(name));
+    ship_ptr->set_load_destination(Model::get_Instance().get_island_ptr(name));
 }
 
 // read Island name
@@ -284,7 +284,7 @@ void
 Controller::ship_unload_at(shared_ptr<Ship>ship_ptr)
 {
     string name = receive_and_check_island();
-    ship_ptr->set_unload_destination(g_Model_ptr->get_island_ptr(name));
+    ship_ptr->set_unload_destination(Model::get_Instance().get_island_ptr(name));
 }
 
 // read Island name
@@ -294,7 +294,7 @@ Controller::ship_dock_at(shared_ptr<Ship>ship_ptr)
 {
     string name = receive_and_check_island();
 
-    ship_ptr->dock(g_Model_ptr->get_island_ptr(name));
+    ship_ptr->dock(Model::get_Instance().get_island_ptr(name));
 }
 
 // read Ship name
@@ -304,7 +304,7 @@ Controller::ship_attack(shared_ptr<Ship>ship_ptr)
 {
     string name = receive_and_check_ship();
 
-    ship_ptr->attack(g_Model_ptr->get_ship_ptr(name));
+    ship_ptr->attack(Model::get_Instance().get_ship_ptr(name));
 }
 
 void
@@ -345,7 +345,7 @@ Controller::receive_and_check_island()
 {
     string name;
     cin >> name;
-    if (!g_Model_ptr->is_island_present(name))
+    if (!Model::get_Instance().is_island_present(name))
     {
         throw Error("Island not found!");
     }
@@ -357,7 +357,7 @@ Controller::receive_and_check_ship()
 {
     string name;
     cin >> name;
-    if (!g_Model_ptr->is_ship_present(name))
+    if (!Model::get_Instance().is_ship_present(name))
     {
         throw Error("Ship not found!");
     }

@@ -22,13 +22,17 @@ Model::Model() :
 {
     // create initial set of islands and ships
     // and place them into the appropriate containers
-    shared_ptr<Island> exxon(make_shared<Island>("Exxon",Point(10,10),1000,200));
-    shared_ptr<Island> shell(make_shared<Island>("Shell",Point(0,30),1000,200));
-    shared_ptr<Island> bermuda(make_shared<Island>("Bermuda",Point(20,20)));
+    shared_ptr<Island>
+        exxon(make_shared<Island>("Exxon",Point(10,10),1000,200)),
+        shell(make_shared<Island>("Shell",Point(0,30),1000,200)),
+        bermuda(make_shared<Island>("Bermuda",Point(20,20))),
+        island(make_shared<Island>("Treasure_Island",Point(50,5),100,5));
     
-    sim_object_map["Exxon"]   = island_map["Exxon"]   = exxon;
-    sim_object_map["Shell"]   = island_map["Shell"]   = shell;
-    sim_object_map["Bermuda"] = island_map["Bermuda"] = bermuda;
+    sim_object_map["Exxon"]           = island_map["Exxon"]   = exxon;
+    sim_object_map["Shell"]           = island_map["Shell"]   = shell;
+    sim_object_map["Bermuda"]         = island_map["Bermuda"] = bermuda;
+    sim_object_map["Treasure_Island"] = island_map["Treasure_Island"] = island;
+    
     sim_object_map["Ajax"]    =
     ship_map["Ajax"]          = create_ship("Ajax","Cruiser",Point(15,15));
     sim_object_map["Xerxes"]  =
