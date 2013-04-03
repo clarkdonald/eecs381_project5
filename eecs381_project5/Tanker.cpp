@@ -11,14 +11,10 @@ Tanker::Tanker(const std::string& name_, Point position_) :
     load_destination(nullptr),
     unload_destination(nullptr),
     tanker_state(NO_CARGO_DESTINATION)
-{
-    cout << "Tanker " << get_name() << " constructed" << endl;
-}
+{}
 
 Tanker::~Tanker()
-{
-    cout << "Tanker " << get_name() << " destructed" << endl;
-}
+{}
 
 void
 Tanker::set_destination_position_and_speed(Point destination, double speed)

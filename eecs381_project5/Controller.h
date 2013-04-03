@@ -17,10 +17,10 @@ class Ship;
 class Controller
 {
   public:       
-      // output constructor message
+      // constructor
       Controller();
 
-      // output destructor message
+      // destructor
       ~Controller();
 
       // create View object,

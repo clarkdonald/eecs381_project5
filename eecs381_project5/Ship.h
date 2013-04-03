@@ -34,7 +34,7 @@ class Island;
 class Ship : public Sim_object
 {
   public:
-      // initialize, then output constructor message
+      // constructor to initialize
       Ship(const std::string& name_,
            Point position_,
            double fuel_capacity_, 
@@ -42,8 +42,8 @@ class Ship : public Sim_object
            double fuel_consumption_,
            int resistance_);
 
+      // destructor
       // made pure virtual to mark this class as abstract
-      // to output destructor message
       virtual ~Ship() = 0;
 
       // forbid copy/move, construction/assignment

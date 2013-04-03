@@ -63,6 +63,13 @@ class Model
 
       // will throw Error("Island not found!") if no island of that name
       std::shared_ptr<Island> get_island_ptr(const std::string& name) const;
+    
+    ///////////////////////
+    
+      // return island location
+      Point get_island_location(const std::string &name) const;
+    
+    ///////////////////////
 
       // is there such an ship?
       bool is_ship_present(const std::string& name) const;

@@ -28,10 +28,10 @@ class Island;
 class Tanker : public Ship
 {
   public:
-      // initialize, the output constructor message
+      // constructor to initialize
       Tanker(const std::string& name_, Point position_);
 
-      // output destructor message
+      // destructor
       ~Tanker();
 
       // This class overrides these Ship

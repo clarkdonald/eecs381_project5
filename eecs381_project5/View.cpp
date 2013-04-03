@@ -13,14 +13,10 @@ View::View() :
     size(25),
     scale(2.0),
     origin(Point(-10.,-10.))
-{
-    cout << "View constructed" << endl;
-}
+{}
 
 View::~View()
-{
-    cout << "View destructed" << endl;
-}
+{}
 
 void
 View::update_location(const string& name, Point location)

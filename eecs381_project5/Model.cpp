@@ -39,8 +39,6 @@ Model::Model() :
     ship_map["Xerxes"]        = create_ship("Xerxes","Cruiser",Point(25,25));
     sim_object_map["Valdez"]  =
     ship_map["Valdez"]        = create_ship("Valdez","Tanker",Point(30,30));
-
-    cout << "Model constructed" << endl;
 }
 
 Model::~Model()
@@ -50,8 +48,6 @@ Model::~Model()
     island_map.clear();
     ship_map.clear();
     sim_object_map.clear();
-
-    cout << "Model destructed" << endl;
 }
 
 bool
@@ -94,6 +90,14 @@ Model::get_island_ptr(const string& name) const
         throw Error("Island not found!");
     }
     return it->second;
+}
+
+Point
+Model::get_island_location(const string &name) const
+{
+    shared_ptr<Island> island_ptr = get_island_ptr(name);
+    
+    return island_ptr->get_location();
 }
 
 bool

@@ -18,7 +18,7 @@
 class Warship : public Ship, public std::enable_shared_from_this<Warship>
 {
   public:
-      // initialize, then output constructor message
+      // constructor to initialize
       Warship(const std::string& name_,
               Point position_,
               double fuel_capacity_, 
@@ -28,8 +28,8 @@ class Warship : public Ship, public std::enable_shared_from_this<Warship>
               int firepower_,
               double maximum_range_);
 
-      // a pure virtual function to mark this as an abstract class, 
-      // but defined anyway to output destructor message
+      // destructor
+      // a pure virtual function to mark this as an abstract class
       virtual ~Warship() = 0;
 
       // perform warship-specific behavior

@@ -21,14 +21,10 @@ Warship::Warship(const string& name_,
     firepower(firepower_),
     maximum_range(maximum_range_),
     warship_state(NOT_ATTACKING)
-{
-    cout << "Warship " << get_name() << " constructed" << endl;
-}
+{}
 
 Warship::~Warship()
-{
-    cout << "Warship "  << get_name() << " destructed" << endl;
-}
+{}
 
 void
 Warship::update()

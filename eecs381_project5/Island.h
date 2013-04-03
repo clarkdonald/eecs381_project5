@@ -14,13 +14,13 @@
 class Island : public Sim_object
 {
   public:
-      // initialize then output constructor message
+      // constructor to initialize
       Island (const std::string& name,
               Point position_,
               double fuel_ = 0.,
               double production_rate_ = 0.);
 
-      // output destructor message
+      // destructor
       ~Island();
 
       // forbid copy/move, construction/assignment

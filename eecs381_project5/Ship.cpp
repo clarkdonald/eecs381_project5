@@ -20,14 +20,10 @@ Ship::Ship(const string& name_,
     resistance(resistance_),
     docked_island(nullptr),
     ship_state(STOPPED)
-{
-    cout << "Ship " << get_name() << " constructed" << endl;
-}
+{}
 
 Ship::~Ship()
-{
-    cout << "Ship " << get_name() << " destructed" << endl;
-}
+{}
 
 bool
 Ship::can_move() const

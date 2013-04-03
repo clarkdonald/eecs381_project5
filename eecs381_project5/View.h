@@ -44,7 +44,7 @@ class View
 {
   public:
       // default constructor sets the default size,
-      // scale, and origin, outputs constructor message
+      // scale, and origin
       View(); 
       ~View();
 

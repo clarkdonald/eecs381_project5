@@ -34,8 +34,6 @@ Controller::Controller()
     model_command_map["status"]     = &Controller::model_status;
     model_command_map["go"]         = &Controller::model_go;
     model_command_map["create"]     = &Controller::model_create;
-
-    cout << "Controller constructed" << endl;
 }
 
 Controller::~Controller()
@@ -43,7 +41,6 @@ Controller::~Controller()
     ship_command_map.clear();
     model_command_map.clear();
     view_command_map.clear();
-    cout << "Controller destructed" << endl;
 }
 
 // create View object,
@@ -59,9 +56,12 @@ Controller::run()
     while (true)
     {
         string first_word, second_word;
-        map<string, void (Controller::*)()>::const_iterator m_command_it;
-        map<std::string, void (Controller::*)(shared_ptr<Ship>)>::const_iterator s_command_it;
-        map<std::string, void (Controller::*)(shared_ptr<View>)>::const_iterator v_command_it;
+        map<string, void (Controller::*)()>::const_iterator
+            m_command_it;
+        map<std::string, void (Controller::*)(shared_ptr<Ship>)>::const_iterator
+            s_command_it;
+        map<std::string, void (Controller::*)(shared_ptr<View>)>::const_iterator
+            v_command_it;
 
         cout << "\nTime " <<  Model::get_Instance().get_time() << ": Enter command: ";
         cin >> first_word;
