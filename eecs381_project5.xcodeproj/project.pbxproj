@@ -7,8 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		40185650170903B70028D747 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4018564F170903B70028D747 /* main.cpp */; };
 		40185652170903B70028D747 /* eecs381_project5.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40185651170903B70028D747 /* eecs381_project5.1 */; };
+		401856791709079F0028D747 /* Controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4018565B1709079F0028D747 /* Controller.cpp */; };
+		4018567A1709079F0028D747 /* Cruiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4018565D1709079F0028D747 /* Cruiser.cpp */; };
+		4018567B1709079F0028D747 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4018565F1709079F0028D747 /* Geometry.cpp */; };
+		4018567C1709079F0028D747 /* Island.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856611709079F0028D747 /* Island.cpp */; };
+		4018567E1709079F0028D747 /* Model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856641709079F0028D747 /* Model.cpp */; };
+		4018567F1709079F0028D747 /* Navigation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856661709079F0028D747 /* Navigation.cpp */; };
+		401856801709079F0028D747 /* p5_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856681709079F0028D747 /* p5_main.cpp */; };
+		401856811709079F0028D747 /* Ship_factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856691709079F0028D747 /* Ship_factory.cpp */; };
+		401856821709079F0028D747 /* Ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4018566B1709079F0028D747 /* Ship.cpp */; };
+		401856831709079F0028D747 /* Tanker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4018566E1709079F0028D747 /* Tanker.cpp */; };
+		401856841709079F0028D747 /* Track_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856711709079F0028D747 /* Track_base.cpp */; };
+		401856851709079F0028D747 /* Utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856731709079F0028D747 /* Utility.cpp */; };
+		401856861709079F0028D747 /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856751709079F0028D747 /* View.cpp */; };
+		401856871709079F0028D747 /* Warship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856771709079F0028D747 /* Warship.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,8 +39,36 @@
 
 /* Begin PBXFileReference section */
 		4018564C170903B70028D747 /* eecs381_project5 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = eecs381_project5; sourceTree = BUILT_PRODUCTS_DIR; };
-		4018564F170903B70028D747 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		40185651170903B70028D747 /* eecs381_project5.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = eecs381_project5.1; sourceTree = "<group>"; };
+		4018565B1709079F0028D747 /* Controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Controller.cpp; sourceTree = "<group>"; };
+		4018565C1709079F0028D747 /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
+		4018565D1709079F0028D747 /* Cruiser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cruiser.cpp; sourceTree = "<group>"; };
+		4018565E1709079F0028D747 /* Cruiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cruiser.h; sourceTree = "<group>"; };
+		4018565F1709079F0028D747 /* Geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Geometry.cpp; sourceTree = "<group>"; };
+		401856601709079F0028D747 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
+		401856611709079F0028D747 /* Island.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Island.cpp; sourceTree = "<group>"; };
+		401856621709079F0028D747 /* Island.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Island.h; sourceTree = "<group>"; };
+		401856641709079F0028D747 /* Model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Model.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		401856651709079F0028D747 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
+		401856661709079F0028D747 /* Navigation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Navigation.cpp; sourceTree = "<group>"; };
+		401856671709079F0028D747 /* Navigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Navigation.h; sourceTree = "<group>"; };
+		401856681709079F0028D747 /* p5_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = p5_main.cpp; sourceTree = "<group>"; };
+		401856691709079F0028D747 /* Ship_factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ship_factory.cpp; sourceTree = "<group>"; };
+		4018566A1709079F0028D747 /* Ship_factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ship_factory.h; sourceTree = "<group>"; };
+		4018566B1709079F0028D747 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ship.cpp; sourceTree = "<group>"; };
+		4018566C1709079F0028D747 /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Ship.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		4018566D1709079F0028D747 /* Sim_object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sim_object.h; sourceTree = "<group>"; };
+		4018566E1709079F0028D747 /* Tanker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tanker.cpp; sourceTree = "<group>"; };
+		4018566F1709079F0028D747 /* Tanker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tanker.h; sourceTree = "<group>"; };
+		401856701709079F0028D747 /* test.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = test.pl; sourceTree = "<group>"; };
+		401856711709079F0028D747 /* Track_base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track_base.cpp; sourceTree = "<group>"; };
+		401856721709079F0028D747 /* Track_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track_base.h; sourceTree = "<group>"; };
+		401856731709079F0028D747 /* Utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utility.cpp; sourceTree = "<group>"; };
+		401856741709079F0028D747 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		401856751709079F0028D747 /* View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = View.cpp; sourceTree = "<group>"; };
+		401856761709079F0028D747 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
+		401856771709079F0028D747 /* Warship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Warship.cpp; sourceTree = "<group>"; };
+		401856781709079F0028D747 /* Warship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Warship.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +101,35 @@
 		4018564E170903B70028D747 /* eecs381_project5 */ = {
 			isa = PBXGroup;
 			children = (
-				4018564F170903B70028D747 /* main.cpp */,
+				4018565B1709079F0028D747 /* Controller.cpp */,
+				4018565C1709079F0028D747 /* Controller.h */,
+				4018565D1709079F0028D747 /* Cruiser.cpp */,
+				4018565E1709079F0028D747 /* Cruiser.h */,
+				4018565F1709079F0028D747 /* Geometry.cpp */,
+				401856601709079F0028D747 /* Geometry.h */,
+				401856611709079F0028D747 /* Island.cpp */,
+				401856621709079F0028D747 /* Island.h */,
+				401856641709079F0028D747 /* Model.cpp */,
+				401856651709079F0028D747 /* Model.h */,
+				401856661709079F0028D747 /* Navigation.cpp */,
+				401856671709079F0028D747 /* Navigation.h */,
+				401856681709079F0028D747 /* p5_main.cpp */,
+				401856691709079F0028D747 /* Ship_factory.cpp */,
+				4018566A1709079F0028D747 /* Ship_factory.h */,
+				4018566B1709079F0028D747 /* Ship.cpp */,
+				4018566C1709079F0028D747 /* Ship.h */,
+				4018566D1709079F0028D747 /* Sim_object.h */,
+				4018566E1709079F0028D747 /* Tanker.cpp */,
+				4018566F1709079F0028D747 /* Tanker.h */,
+				401856701709079F0028D747 /* test.pl */,
+				401856711709079F0028D747 /* Track_base.cpp */,
+				401856721709079F0028D747 /* Track_base.h */,
+				401856731709079F0028D747 /* Utility.cpp */,
+				401856741709079F0028D747 /* Utility.h */,
+				401856751709079F0028D747 /* View.cpp */,
+				401856761709079F0028D747 /* View.h */,
+				401856771709079F0028D747 /* Warship.cpp */,
+				401856781709079F0028D747 /* Warship.h */,
 				40185651170903B70028D747 /* eecs381_project5.1 */,
 			);
 			path = eecs381_project5;
@@ -117,7 +186,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40185650170903B70028D747 /* main.cpp in Sources */,
+				401856791709079F0028D747 /* Controller.cpp in Sources */,
+				4018567A1709079F0028D747 /* Cruiser.cpp in Sources */,
+				4018567B1709079F0028D747 /* Geometry.cpp in Sources */,
+				4018567C1709079F0028D747 /* Island.cpp in Sources */,
+				4018567E1709079F0028D747 /* Model.cpp in Sources */,
+				4018567F1709079F0028D747 /* Navigation.cpp in Sources */,
+				401856801709079F0028D747 /* p5_main.cpp in Sources */,
+				401856811709079F0028D747 /* Ship_factory.cpp in Sources */,
+				401856821709079F0028D747 /* Ship.cpp in Sources */,
+				401856831709079F0028D747 /* Tanker.cpp in Sources */,
+				401856841709079F0028D747 /* Track_base.cpp in Sources */,
+				401856851709079F0028D747 /* Utility.cpp in Sources */,
+				401856861709079F0028D747 /* View.cpp in Sources */,
+				401856871709079F0028D747 /* Warship.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,6 +298,7 @@
 				40185657170903B70028D747 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
