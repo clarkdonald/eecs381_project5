@@ -64,12 +64,9 @@ class Model
       // will throw Error("Island not found!") if no island of that name
       std::shared_ptr<Island> get_island_ptr(const std::string& name) const;
     
-    ///////////////////////
-    
-      // return island location
-      Point get_island_location(const std::string &name) const;
-    
-    ///////////////////////
+      // return island if there is an island located at location
+      // else, return a nullptr
+      std::shared_ptr<Island> is_location_island(Point location) const;
 
       // is there such an ship?
       bool is_ship_present(const std::string& name) const;
@@ -85,7 +82,7 @@ class Model
 
       // increment the time, and tell
       // all objects to update themselves
-      void update();    
+      void update();  
 
       /* View services */
       // Attaching a View adds it to the

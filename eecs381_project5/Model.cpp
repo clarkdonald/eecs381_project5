@@ -92,12 +92,13 @@ Model::get_island_ptr(const string& name) const
     return it->second;
 }
 
-Point
-Model::get_island_location(const string &name) const
+shared_ptr<Island>
+Model::is_location_island(Point location) const
 {
-    shared_ptr<Island> island_ptr = get_island_ptr(name);
-    
-    return island_ptr->get_location();
+    return find_if(island_map.begin(),
+                   island_map.end(),
+                   [&location](pair<string, shared_ptr<Island>> obj)
+                   {return (obj.second->get_location() == location);})->second;
 }
 
 bool

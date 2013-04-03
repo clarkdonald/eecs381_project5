@@ -148,7 +148,7 @@ class Ship : public Sim_object
           MOVING_TO_POSITION,
           MOVING_ON_COURSE,
           DEAD_IN_THE_WATER,
-          SUNK,
+          SUNK
       } ship_state;
 
       // Updates position, fuel, and movement_state,

@@ -103,7 +103,8 @@ Ship::update()
                     cout << get_name() << " now at "
                          << track_base.get_position() << endl;
                     Model::get_Instance().notify_location(get_name(),
-                                                 track_base.get_position());
+                                                          track_base.
+                                                              get_position());
                     break;
                 case DOCKED:
                     cout << get_name() << " docked at "
