@@ -4,6 +4,7 @@
 #include "Ship.h"
 #include <map>
 #include <string>
+#include <vector>
 
 class Island;
 
@@ -36,9 +37,10 @@ class Cruise_ship : public Ship
       virtual void stop() override;
     
   private:
-      double current_speed;
+      double cruise_speed;
       std::shared_ptr<Island> first_island;
       std::shared_ptr<Island> next_island;
+      std::vector<Point> visited_islands;
     
       enum Cruise_Ship_State_e
       {

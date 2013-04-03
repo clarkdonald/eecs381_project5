@@ -67,6 +67,9 @@ class Model
       // return island if there is an island located at location
       // else, return a nullptr
       std::shared_ptr<Island> is_location_island(Point location) const;
+    
+      // return locations of all islands
+      std::vector<Point> island_locations();
 
       // is there such an ship?
       bool is_ship_present(const std::string& name) const;

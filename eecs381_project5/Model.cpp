@@ -101,6 +101,19 @@ Model::is_location_island(Point location) const
                    {return (obj.second->get_location() == location);})->second;
 }
 
+std::vector<Point>
+Model::island_locations()
+{
+    vector<Point> return_vector;
+    
+    for_each(island_map.begin(),
+             island_map.end(),
+             [&return_vector](pair<string, shared_ptr<Island>> obj)
+             {return_vector.push_back(obj.second->get_location());});
+    
+    return return_vector;
+}
+
 bool
 Model::is_ship_present(const string& name) const
 {
