@@ -20,8 +20,8 @@
 		401856831709079F0028D747 /* Tanker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4018566E1709079F0028D747 /* Tanker.cpp */; };
 		401856841709079F0028D747 /* Track_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856711709079F0028D747 /* Track_base.cpp */; };
 		401856851709079F0028D747 /* Utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856731709079F0028D747 /* Utility.cpp */; };
-		401856861709079F0028D747 /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856751709079F0028D747 /* View.cpp */; };
 		401856871709079F0028D747 /* Warship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 401856771709079F0028D747 /* Warship.cpp */; };
+		406BE6A7170D0D5C009DDBB5 /* Views.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406BE6A5170D0D5C009DDBB5 /* Views.cpp */; };
 		C9A7431D170C039300A324D7 /* Cruise_ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9A7431B170C039200A324D7 /* Cruise_ship.cpp */; };
 /* End PBXBuildFile section */
 
@@ -66,10 +66,10 @@
 		401856721709079F0028D747 /* Track_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track_base.h; sourceTree = "<group>"; };
 		401856731709079F0028D747 /* Utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utility.cpp; sourceTree = "<group>"; };
 		401856741709079F0028D747 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
-		401856751709079F0028D747 /* View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = View.cpp; sourceTree = "<group>"; };
-		401856761709079F0028D747 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
 		401856771709079F0028D747 /* Warship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Warship.cpp; sourceTree = "<group>"; };
 		401856781709079F0028D747 /* Warship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Warship.h; sourceTree = "<group>"; };
+		406BE6A5170D0D5C009DDBB5 /* Views.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Views.cpp; sourceTree = "<group>"; };
+		406BE6A6170D0D5C009DDBB5 /* Views.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Views.h; sourceTree = "<group>"; };
 		C9A7431B170C039200A324D7 /* Cruise_ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cruise_ship.cpp; sourceTree = "<group>"; };
 		C9A7431C170C039300A324D7 /* Cruise_ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cruise_ship.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -129,13 +129,13 @@
 				401856721709079F0028D747 /* Track_base.h */,
 				401856731709079F0028D747 /* Utility.cpp */,
 				401856741709079F0028D747 /* Utility.h */,
-				401856751709079F0028D747 /* View.cpp */,
-				401856761709079F0028D747 /* View.h */,
 				401856771709079F0028D747 /* Warship.cpp */,
 				401856781709079F0028D747 /* Warship.h */,
 				40185651170903B70028D747 /* eecs381_project5.1 */,
 				C9A7431B170C039200A324D7 /* Cruise_ship.cpp */,
 				C9A7431C170C039300A324D7 /* Cruise_ship.h */,
+				406BE6A5170D0D5C009DDBB5 /* Views.cpp */,
+				406BE6A6170D0D5C009DDBB5 /* Views.h */,
 			);
 			path = eecs381_project5;
 			sourceTree = "<group>";
@@ -203,9 +203,9 @@
 				401856831709079F0028D747 /* Tanker.cpp in Sources */,
 				401856841709079F0028D747 /* Track_base.cpp in Sources */,
 				401856851709079F0028D747 /* Utility.cpp in Sources */,
-				401856861709079F0028D747 /* View.cpp in Sources */,
 				401856871709079F0028D747 /* Warship.cpp in Sources */,
 				C9A7431D170C039300A324D7 /* Cruise_ship.cpp in Sources */,
+				406BE6A7170D0D5C009DDBB5 /* Views.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

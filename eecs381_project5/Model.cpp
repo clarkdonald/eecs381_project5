@@ -208,6 +208,33 @@ Model::notify_location(const string& name, Point location)
              {view_ptr->update_location(name, location);});
 }
 
+void
+Model::notify_fuel(const std::string& name, double fuel)
+{
+    for_each(view_array.begin(),
+             view_array.end(),
+             [&name, &fuel](shared_ptr<View> view_ptr)
+             {view_ptr->update_fuel(name, fuel);});
+}
+
+void
+Model::notify_speed(const std::string& name, double speed)
+{
+    for_each(view_array.begin(),
+             view_array.end(),
+             [&name, &speed](shared_ptr<View> view_ptr)
+             {view_ptr->update_speed(name, speed);});
+}
+
+void
+Model::notify_course(const std::string& name, double course)
+{
+    for_each(view_array.begin(),
+             view_array.end(),
+             [&name, &course](shared_ptr<View> view_ptr)
+             {view_ptr->update_course(name, course);});
+}
+
 // notify the views that an object is now gone
 void
 Model::notify_gone(const string& name)

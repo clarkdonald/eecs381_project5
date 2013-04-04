@@ -121,7 +121,7 @@ class Ship : public Sim_object
       // interactions with other objects
       // receive a hit from an attacker
       virtual void receive_hit(int, std::shared_ptr<Ship>);
-
+    
   protected:
       double get_maximum_speed() const
           {return maximum_speed;}

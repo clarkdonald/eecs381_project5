@@ -1,41 +1,6 @@
 #ifndef VIEWS_H
 #define VIEWS_H
 
-/*****************************************************
- Views class
- 
- The View class encapsulates the data and
- functions needed to generate the map
- display, and control its properties.
- It has a "memory" for the names and locations
- of the to-be-plotted objects.
- 
- Usage:
- 1. Call the update_location function with
- the name and position of each object
- to be plotted. If the object is not already
- in the View's memory, it will be added
- along with its location. If it is already present,
- its location will be set to the
- supplied location. If a single object changes
- location, its location can be separately
- updated with a call to update_location.
- 2. Call the update_remove function with the name
- of any object that should no longer
- be plotted. This must be done *after* any call to
- update_location that
- has the same object name since update_location will
- add any object name supplied.
- 3. Call the draw function to print out the map.
- 4. As needed, change the origin, scale,
- or displayed size of the map
- with the appropriate functions. Since the view
- "remembers" the previously updated
- information, the draw function will print out
- a map showing the previous objects
- using the new settings.
- ********************************************************/
-
 #include "Geometry.h"
 #include <string>
 #include <map>
@@ -45,6 +10,21 @@ class View
   public:
       View();
       virtual ~View() = 0;
+    
+      // Save the supplied name and location
+      // for future use in a draw() call
+      // If the name is already present,
+      // the new location replaces the previous one.
+      virtual void update_location(const std::string& name, Point location) = 0;
+    
+      // Save supplied name and fuel for future use in draw() call
+      virtual void update_fuel(const std::string& name, double fuel) = 0;
+    
+      // Save supplied name and speed for future use in draw() call
+      virtual void update_speed(const std::string& name, double speed) = 0;
+    
+      // Save supplied name and course for future use in draw() call
+      virtual void update_course(const std::string& name, double course) = 0;
     
       // Remove the name and its location;
       // no error if the name is not present.
@@ -63,13 +43,15 @@ class Map_View : public View
   public:
       // default constructor sets the default size, scale, and origin
       Map_View();
-      ~Map_View();
+      ~Map_View()
+          {name_location_map.clear();}
     
       // Save the supplied name and location
       // for future use in a draw() call
       // If the name is already present,
       // the new location replaces the previous one.
-      void update_location(const std::string& name, Point location);
+      void update_location(const std::string& name, Point location) override
+          {name_location_map[name] = location;}
     
       // Remove the name and its location;
       // no error if the name is not present.
@@ -80,7 +62,8 @@ class Map_View : public View
     
       // Discard the saved information -
       // drawing will show only a empty pattern
-      virtual void clear() override;
+      virtual void clear() override
+          {name_location_map.clear();}
     
       // modify the display parameters
       // if the size is out of bounds
@@ -113,14 +96,57 @@ class Map_View : public View
 
 class Sailing_View : public View
 {
-    Sailing_View();
-    ~Sailing_View();
+  public:
+      Sailing_View();
+      ~Sailing_View();
+    
+      // Save supplied name and fuel for future use in draw() call
+      virtual void update_fuel(const std::string& name, double fuel) override
+          {fuel_map[name] = fuel;}
+    
+      // Save supplied name and speed for future use in draw() call
+      virtual void update_speed(const std::string& name, double speed) override
+          {speed_map[name] = speed;}
+    
+      // Save supplied name and course for future use in draw() call
+      virtual void update_course(const std::string& name, double course) override
+          {course_map[name] = course;}
+    
+      // Remove the name and its location;
+      // no error if the name is not present.
+      virtual void update_remove(const std::string& name) override;
+    
+      // prints out the current map
+      virtual void draw() override;
+    
+      // Discard the saved information -
+      // drawing will show only a empty pattern
+      virtual void clear() override;
+    
+  private:
+      std::map<std::string, double> fuel_map;
+      std::map<std::string, double> speed_map;
+      std::map<std::string, double> course_map;
 };
 
 class Bridge_View : public View
 {
-    Bridge_View();
-    ~Bridge_View();
+  public:
+      Bridge_View();
+      ~Bridge_View();
+    
+      // Remove the name and its location;
+      // no error if the name is not present.
+      virtual void update_remove(const std::string& name) override;
+    
+      // prints out the current map
+      virtual void draw() override;
+
+      // Discard the saved information -
+      // drawing will show only a empty pattern
+      virtual void clear() override;
+    
+  private:
 };
 
 #endif

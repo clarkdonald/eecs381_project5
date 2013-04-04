@@ -101,6 +101,11 @@ class Model
 
       // notify the views about an object's location
       void notify_location(const std::string& name, Point location);
+    
+      // notify the views about object's fuel, speed, and course
+      void notify_fuel(const std::string& name, double fuel);
+      void notify_speed(const std::string& name, double speed);
+      void notify_course(const std::string& name, double course);
 
       // notify the views that an object is now gone
       void notify_gone(const std::string& name);

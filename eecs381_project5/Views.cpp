@@ -9,27 +9,17 @@
 
 using namespace std;
 
+/// MAP VIEW /////////////////////////////////////////////////////
 Map_View::Map_View() :
     size(25),
     scale(2.0),
     origin(Point(-10.,-10.))
 {}
 
-Map_View::~Map_View()
-{
-    name_location_map.clear();
-}
-
-void
-Map_View::update_location(const string& name, Point location)
-{
-    name_location_map[name] = location;
-}
-
 void
 Map_View::update_remove(const string& name)
 {
-    map<std::string, Point>::iterator it;
+    map<string, Point>::iterator it;
     
     if ((it = name_location_map.find(name)) !=
         name_location_map.end())
@@ -43,7 +33,7 @@ void
 Map_View::draw()
 {
     // 3D grid is local to draw
-    vector< vector<std::string> > grid;
+    vector< vector<string> > grid;
     grid.resize(size, vector<string>(size, ". "));
     
     cout << "Display size: " << size
@@ -131,12 +121,6 @@ Map_View::draw()
 }
 
 void
-Map_View::clear()
-{
-    name_location_map.clear();
-}
-
-void
 Map_View::set_size(int size_)
 {
     if (size_ > 30)
@@ -209,4 +193,70 @@ Map_View::get_subscripts(int &ix, int &iy, Point location)
         return true;
     }
 }
+//////////////////////////////////////////////////////////////////
+
+
+/// SAILING VIEW /////////////////////////////////////////////////
+Sailing_View::Sailing_View()
+{}
+
+Sailing_View::~Sailing_View()
+{
+    fuel_map.clear();
+    speed_map.clear();
+    course_map.clear();
+}
+
+void
+Sailing_View::update_remove(const string& name)
+{
+    map<string, double>::iterator it;
+    
+    if ((it = fuel_map.find(name)) != fuel_map.end())
+    {
+        fuel_map.erase(it);
+    }
+    if ((it = speed_map.find(name)) != speed_map.end())
+    {
+        speed_map.erase(it);
+    }
+    if ((it = course_map.find(name)) != course_map.end())
+    {
+        course_map.erase(it);
+    }
+}
+
+void
+Sailing_View::draw()
+{
+    
+}
+
+void
+Sailing_View::clear()
+{
+    fuel_map.clear();
+    speed_map.clear();
+    course_map.clear();
+}
+//////////////////////////////////////////////////////////////////
+
+
+/// BRIDGE VIEW //////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
