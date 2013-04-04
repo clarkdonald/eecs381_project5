@@ -55,7 +55,7 @@ class Cruise_ship : public Ship
       void stop_cruise();
     
       // obtain the next island to visit in cruise
-      Point get_next_island();
+      Point get_next_island_location();
 };
 
 #endif

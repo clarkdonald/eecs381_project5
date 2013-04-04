@@ -102,7 +102,7 @@ Model::is_location_island(Point location) const
 }
 
 std::vector<Point>
-Model::island_locations()
+Model::get_island_locations() const
 {
     vector<Point> return_vector;
     

@@ -2,6 +2,8 @@
 #include "Model.h"
 #include "Island.h"
 #include "Utility.h"
+#include <algorithm>
+#include <cfloat>
 
 using namespace std;
 
@@ -21,37 +23,38 @@ Cruise_ship::update()
 {
     Ship::update();
     
-    if (cruise_ship_state != NOT_CRUISING)
+    if (!can_move() && cruise_ship_state == CRUISING)
     {
-        if (!can_move() && cruise_ship_state == CRUISING)
+        stop_cruise();
+    }
+    else if (is_docked())
+    {
+        switch (cruise_ship_state)
         {
-            stop_cruise();
+            case NOT_CRUISING:
+            case CRUISING:
+                break;
+            case FIRST_UPDATE:
+                refuel();
+                cruise_ship_state = SECOND_UPDATE;
+                break;
+            case SECOND_UPDATE:
+                cruise_ship_state = THIRD_UPDATE;
+                break;
+            case THIRD_UPDATE:
+                Point destination = get_next_island_location();
+                Ship::set_destination_position_and_speed(destination, cruise_speed);
+                next_island = Model::get_Instance().is_location_island(destination);
+                cruise_ship_state = CRUISING;
+                break;
         }
-        else if (is_docked())
-        {
-            switch (cruise_ship_state)
-            {
-                case FIRST_UPDATE:
-                    refuel();
-                    cruise_ship_state = SECOND_UPDATE;
-                    break;
-                case SECOND_UPDATE:
-                    cruise_ship_state = THIRD_UPDATE;
-                    break;
-                case THIRD_UPDATE:
-                    Ship::set_destination_position_and_speed(get_next_island(), cruise_speed);
-                    cruise_ship_state = CRUISING;
-                    break;
-                default:
-                    break;
-            }
-        }
-        else if (!is_moving() && can_dock(next_island) &&
-                 cruise_ship_state == CRUISING)
-        {
-            dock(next_island);
-            cruise_ship_state = FIRST_UPDATE;
-        }
+    }
+    else if (!is_moving() && can_dock(next_island) &&
+             cruise_ship_state == CRUISING)
+    {
+        dock(next_island);
+        visited_islands.push_back(next_island->get_location());
+        cruise_ship_state = FIRST_UPDATE;
     }
 }
 
@@ -88,6 +91,8 @@ Cruise_ship::set_destination_position_and_speed(Point destination, double speed)
     
     // if cruising, then we need to stop cruise
     stop_cruise();
+
+    Ship::set_destination_position_and_speed(destination, speed);
     
     // ship is starting a cruise towards an island
     if ((island_ptr = Model::get_Instance().is_location_island(destination)))
@@ -96,14 +101,11 @@ Cruise_ship::set_destination_position_and_speed(Point destination, double speed)
         first_island      = island_ptr;
         next_island       = island_ptr;
         cruise_ship_state = CRUISING;
-        visited_islands.push_back(island_ptr->get_location());
         cout << get_name() << " will visit "
             << island_ptr->get_name() << endl;
         cout << get_name() << " cruise will start and end at "
              << island_ptr->get_name() << endl;
     }
-    
-    Ship::set_destination_position_and_speed(destination, speed);
 }
 
 void
@@ -135,7 +137,48 @@ Cruise_ship::stop_cruise()
 }
 
 Point
-Cruise_ship::get_next_island()
+Cruise_ship::get_next_island_location()
 {
+    double min_distance = DBL_MAX;
+    Point next_destination;
     
+    vector<Point> island_locations = Model::get_Instance().
+                                         get_island_locations();
+    
+    // obtain shortest distance location out of the unvisited islands
+    for_each(island_locations.begin(),
+             island_locations.end(),
+             [this, &min_distance, &next_destination]
+             (Point location)
+             {
+                 double distance;
+                 auto it = find(visited_islands.begin(),
+                                visited_islands.end(),
+                                location);
+                 
+                 // the island has not been visited yet
+                 if (it == visited_islands.end())
+                 {
+                     distance = cartesian_distance(next_island->get_location(), location);
+                     
+                     if (distance < min_distance)
+                     {
+                         min_distance = distance;
+                         next_destination = location;
+                     }
+                 }
+             });
+    
+    return next_destination;
 }
+
+
+
+
+
+
+
+
+
+
+
