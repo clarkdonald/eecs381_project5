@@ -1,7 +1,7 @@
 #include "Model.h"
 #include "Ship.h"
 #include "Island.h"
-#include "View.h"
+#include "Views.h"
 #include "Sim_object.h"
 #include "Ship_factory.h"
 #include "Utility.h"
