@@ -53,32 +53,32 @@ class Model
       // is name already in use for either ship or island?
       // either the identical name,
       // or identical in first two characters counts as in-use
-      bool is_name_in_use(const std::string& name) const;
+      bool is_name_in_use(const std::string&) const;
 
       // is there such an island?
-      bool is_island_present(const std::string& name) const;
+      bool is_island_present(const std::string&) const;
 
       // add a new island to the lists
       void add_island(std::shared_ptr<Island>);
 
       // will throw Error("Island not found!") if no island of that name
-      std::shared_ptr<Island> get_island_ptr(const std::string& name) const;
+      std::shared_ptr<Island> get_island_ptr(const std::string&) const;
     
       // return island if there is an island located at location
       // else, return a nullptr
-      std::shared_ptr<Island> is_location_island(Point location) const;
+      std::shared_ptr<Island> is_location_island(Point) const;
     
       // return locations of all islands
       std::vector<Point> get_island_locations() const;
 
       // is there such an ship?
-      bool is_ship_present(const std::string& name) const;
+      bool is_ship_present(const std::string&) const;
 
       // add a new ship to the list, and update the view
       void add_ship(std::shared_ptr<Ship>);
 
       // will throw Error("Ship not found!") if no ship of that name
-      std::shared_ptr<Ship> get_ship_ptr(const std::string& name) const;
+      std::shared_ptr<Ship> get_ship_ptr(const std::string&) const;
 
       // tell all objects to describe themselves
       void describe() const;
@@ -100,15 +100,15 @@ class Model
       void detach(std::shared_ptr<View>);
 
       // notify the views about an object's location
-      void notify_location(const std::string& name, Point location);
+      void notify_location(const std::string&, Point);
     
       // notify the views about object's fuel, speed, and course
-      void notify_fuel(const std::string& name, double fuel);
-      void notify_speed(const std::string& name, double speed);
-      void notify_course(const std::string& name, double course);
+      void notify_fuel(const std::string&, double);
+      void notify_speed(const std::string&, double);
+      void notify_course(const std::string&, double);
 
       // notify the views that an object is now gone
-      void notify_gone(const std::string& name);
+      void notify_gone(const std::string&);
 
   private:
       // create the initial objects

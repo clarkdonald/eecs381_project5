@@ -1,3 +1,5 @@
+#include "Geometry.h"
+#include "Navigation.h"
 #include "Views.h"
 #include "Utility.h"
 #include <iostream>
@@ -9,12 +11,23 @@
 
 using namespace std;
 
+/// VIEW /////////////////////////////////////////////////////////
+View::View() {}
+View::~View() {}
+//////////////////////////////////////////////////////////////////
+
+
 /// MAP VIEW /////////////////////////////////////////////////////
 Map_View::Map_View() :
     size(25),
     scale(2.0),
     origin(Point(-10.,-10.))
 {}
+
+Map_View::~Map_View()
+{
+    clear();
+}
 
 void
 Map_View::update_remove(const string& name)
@@ -160,16 +173,6 @@ Map_View::set_defaults()
     origin = Point(-10.,-10.);
 }
 
-// Calculate the cell subscripts corresponding
-// to the supplied location parameter,
-// using the current size, scale, and origin of the display.
-// This function assumes that origin is a
-// member variable of type Point,
-// scale is a double value, and size is an
-// integer for the number of rows/columns
-// currently being used for the grid.
-// Return true if the location
-// is within the grid, false if not
 bool
 Map_View::get_subscripts(int &ix, int &iy, Point location)
 {
@@ -202,48 +205,261 @@ Sailing_View::Sailing_View()
 
 Sailing_View::~Sailing_View()
 {
-    fuel_map.clear();
-    speed_map.clear();
-    course_map.clear();
+    clear();
+}
+
+void
+Sailing_View::update_fuel(const std::string& name, double fuel)
+{
+    map<string, Ship_Data>::iterator it;
+    
+    if ((it = ship_data_map.find(name)) != ship_data_map.end())
+    {
+        it->second.fuel = fuel;
+    }
+    else
+    {
+        ship_data_map[name] = {fuel,0.0,0.0};
+    }
+}
+
+void
+Sailing_View::update_speed(const std::string& name, double speed)
+{
+    map<string, Ship_Data>::iterator it;
+    
+    if ((it = ship_data_map.find(name)) != ship_data_map.end())
+    {
+        it->second.speed = speed;
+    }
+    else
+    {
+        ship_data_map[name] = {0.0,speed,0.0};
+    }
+}
+
+void
+Sailing_View::update_course(const std::string& name, double course)
+{
+    map<string, Ship_Data>::iterator it;
+    
+    if ((it = ship_data_map.find(name)) != ship_data_map.end())
+    {
+        it->second.course = course;
+    }
+    else
+    {
+        ship_data_map[name] = {0.0,0.0,course};
+    }
 }
 
 void
 Sailing_View::update_remove(const string& name)
 {
-    map<string, double>::iterator it;
+    map<string, Ship_Data>::iterator it;
     
-    if ((it = fuel_map.find(name)) != fuel_map.end())
+    if ((it = ship_data_map.find(name)) != ship_data_map.end())
     {
-        fuel_map.erase(it);
-    }
-    if ((it = speed_map.find(name)) != speed_map.end())
-    {
-        speed_map.erase(it);
-    }
-    if ((it = course_map.find(name)) != course_map.end())
-    {
-        course_map.erase(it);
+        ship_data_map.erase(it);
     }
 }
 
 void
 Sailing_View::draw()
 {
+    cout << "----- Sailing Data -----" << endl;
+    cout << setw(10) << "Ship" << setw(10) << "Fuel"
+         << setw(10) << "Course" << setw(10) << "Speed" << endl;
     
-}
-
-void
-Sailing_View::clear()
-{
-    fuel_map.clear();
-    speed_map.clear();
-    course_map.clear();
+    for_each(ship_data_map.begin(),
+             ship_data_map.end(),
+             [this](pair<string, Ship_Data> obj)
+             {
+                 cout << setw(10) << obj.first
+                      << setw(10) << obj.second.fuel
+                      << setw(10) << obj.second.course
+                      << setw(10) << obj.second.speed << endl;
+             });
 }
 //////////////////////////////////////////////////////////////////
 
 
 /// BRIDGE VIEW //////////////////////////////////////////////////
+Bridge_View::Bridge_View(const string &name_,
+                         Point location_,
+                         double heading_,
+                         bool sunk_) :
+    x_size(19),
+    y_size(3),
+    scale(10.),
+    origin(-90.),
+    ownship({name_, location_, heading_, sunk_})
+{}
 
+Bridge_View::~Bridge_View()
+{
+    clear();
+}
+
+void
+Bridge_View::update_location(const std::string& name_, Point location_)
+{
+    if (name_ == ownship.name)
+    {
+        ownship.location = location_;
+    }
+    else
+    {
+        map<string, Point>::iterator it;
+        
+        if ((it = name_location_map.find(name_)) !=
+            name_location_map.end())
+        {
+            it->second = location_;
+        }
+    }
+}
+
+void
+Bridge_View::update_course(const std::string& name_, double heading_)
+{
+    if (name_ == ownship.name)
+    {
+        ownship.heading = heading_;
+    }
+}
+
+void
+Bridge_View::update_remove(const std::string& name_)
+{
+    // check if removed is ownship
+    if (name_ == ownship.name)
+    {
+        ownship.sunk = true;
+        clear();
+    }
+    else
+    {
+        map<string, Point>::iterator it;
+        
+        if ((it = name_location_map.find(name_)) !=
+            name_location_map.end())
+        {
+            name_location_map.erase(it);
+        }
+    }
+}
+
+void
+Bridge_View::draw()
+{
+    if (ownship.sunk)
+    {
+        cout << "Bridge view from " << ownship.name << " position "
+             << ownship.location << " heading "
+             << ownship.heading << endl;
+        
+        for (int i = 0; i < y_size; ++i)
+        {
+            cout << "w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-" << endl;
+        }
+    }
+    else
+    {
+        // store ship/island locations for printing
+        vector<string> grid(x_size, ". ");
+        
+        cout << "Bridge view from " << ownship.name << " position "
+             << ownship.location << " heading "
+             << ownship.heading << endl;
+        
+        // place objects into grid after bearing calculation
+        for_each(name_location_map.begin(),
+                 name_location_map.end(),
+                 [this, &grid](pair<string, Point> obj)
+                 {
+                     int x;
+                     
+                     // place object into grid if in range
+                     if (get_x_coordinate(x, calc_angle(obj.second)))
+                     {
+                         if (grid[x] == ". ")
+                         {
+                             grid[x] = obj.first.substr(0,2);
+                         }
+                         else
+                         {
+                             grid[x] = "* ";
+                         }
+                     }
+                 });
+
+        // print grid content to stdout
+        for (int i = 0; i < y_size - 1; ++i)
+        {
+            cout << "     . . . . . . . . . . . . . . . . . . ."
+                 << endl;
+        }
+        
+        for (int i = 0; i < x_size; ++i)
+        {
+            cout << grid[i];
+        }
+
+        cout << endl;
+    }
+    
+    // print x-coordinate axis values
+    double axis = origin;
+    for (int i = 0; i < x_size; i += 3)
+    {
+        cout << setw(6) << axis;
+        axis += 3*scale;
+    }
+    cout << endl;
+}
+
+bool
+Bridge_View::get_x_coordinate(int &ix, double location)
+{
+    // adjust with origin and scale
+    double delta_x = (location - origin) / scale;
+    
+    // truncate delta x to integer after taking the floor
+    // floor function will produce integer
+    // smaller than even for negative values,
+    // so - 0.05 => -1., which will be outside the array.
+    ix = int(floor(delta_x));
+    
+    // if out of range, return false
+    if ((ix < 0) || (ix >= x_size))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+double
+Bridge_View::calc_angle(Point other)
+{
+    Compass_position compass_position(ownship.location, other);
+    
+    double angle = compass_position.bearing - ownship.heading;
+    
+    if (angle < -180.)
+    {
+        angle += 360.;
+    }
+    else if (angle > -180.)
+    {
+        angle -= 360.;
+    }
+    
+    return angle;
+}
 //////////////////////////////////////////////////////////////////
 
 

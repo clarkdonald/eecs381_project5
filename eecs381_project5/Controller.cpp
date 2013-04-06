@@ -9,38 +9,55 @@
 
 using namespace std;
 
+typedef map<string, void (Controller::*)()> No_Arg_Map_t;
+typedef map<string, void (Controller::*)(shared_ptr<Ship>)> Ship_Arg_Map_t;
+typedef map<string, void (Controller::*)(shared_ptr<View>)> View_Arg_Map_t;
+
 Controller::Controller()
 {
-    // populate the ship command map
-    ship_command_map["course"]      = &Controller::ship_course;
-    ship_command_map["position"]    = &Controller::ship_position;
+    // populate the functions needing a ship pointer arg
+    ship_command_map["course"] = &Controller::ship_course;
+    ship_command_map["position"] = &Controller::ship_position;
     ship_command_map["destination"] = &Controller::ship_destination;
-    ship_command_map["load_at"]     = &Controller::ship_load_at;
-    ship_command_map["unload_at"]   = &Controller::ship_unload_at;
-    ship_command_map["dock_at"]     = &Controller::ship_dock_at;
-    ship_command_map["attack"]      = &Controller::ship_attack;
-    ship_command_map["refuel"]      = &Controller::ship_refuel;
-    ship_command_map["stop"]        = &Controller::ship_stop;
+    ship_command_map["load_at"] = &Controller::ship_load_at;
+    ship_command_map["unload_at"] = &Controller::ship_unload_at;
+    ship_command_map["dock_at"] = &Controller::ship_dock_at;
+    ship_command_map["attack"] = &Controller::ship_attack;
+    ship_command_map["refuel"] = &Controller::ship_refuel;
+    ship_command_map["stop"] = &Controller::ship_stop;
     ship_command_map["stop_attack"] = &Controller::ship_stop_attack;
+    
+    // populate the functions for map
+    map_command_map["default"] = &Controller::view_default;
+    map_command_map["size"] = &Controller::view_size;
+    map_command_map["zoom"] = &Controller::view_zoom;
+    map_command_map["pan"] = &Controller::view_pan;
+    map_command_map["open_map_view"] = &Controller::open_map_view;
+    map_command_map["close_map_view"] = &Controller::close_map_view;
+    
+    // populate the functions for sailing
+    sailing_command_map["open_sailing_view"] = &Controller::open_sailing_view;
+    sailing_command_map["close_sailing_view"] = &Controller::close_sailing_view;
+    
+    // populate the functions for bridge
+    bridge_command_map["open_bridge_view"] = &Controller::open_bridge_view;
+    bridge_command_map["close_bridge_view"] = &Controller::close_bridge_view;
 
-    // populate the view command map
-    view_command_map["default"]     = &Controller::view_default;
-    view_command_map["size"]        = &Controller::view_size;
-    view_command_map["zoom"]        = &Controller::view_zoom;
-    view_command_map["pan"]         = &Controller::view_pan;
-    view_command_map["show"]        = &Controller::view_show;
-
-    // populate the model command map
-    model_command_map["status"]     = &Controller::model_status;
-    model_command_map["go"]         = &Controller::model_go;
-    model_command_map["create"]     = &Controller::model_create;
+    // populate the functions needing no args
+    no_arg_command_map["show"] = &Controller::view_show;
+    no_arg_command_map["status"] = &Controller::model_status;
+    no_arg_command_map["go"] = &Controller::model_go;
+    no_arg_command_map["create"] = &Controller::model_create;
+    
 }
 
 Controller::~Controller()
 {
     ship_command_map.clear();
-    model_command_map.clear();
-    view_command_map.clear();
+    no_arg_command_map.clear();
+    map_command_map.clear();
+    bridge_command_map.clear();
+    sailing_command_map.clear();
 }
 
 // create View object,
@@ -49,21 +66,20 @@ Controller::~Controller()
 void
 Controller::run()
 {
-    shared_ptr<View> view_ptr(make_shared<View>());
-    Model::get_Instance().attach(view_ptr);
-
+    shared_ptr<View> map_ptr(make_shared<Map_View>());
+    shared_ptr<View> sailing_ptr(make_shared<Sailing_View>());
+    
     // command loop to accept input from users
     while (true)
     {
         string first_word, second_word;
-        map<string, void (Controller::*)()>::const_iterator
-            m_command_it;
-        map<std::string, void (Controller::*)(shared_ptr<Ship>)>::const_iterator
-            s_command_it;
-        map<std::string, void (Controller::*)(shared_ptr<View>)>::const_iterator
-            v_command_it;
+        No_Arg_Map_t::const_iterator no_arg_it;
+        Ship_Arg_Map_t::const_iterator ship_arg_it;
+        View_Arg_Map_t::const_iterator view_arg_it;
 
-        cout << "\nTime " <<  Model::get_Instance().get_time() << ": Enter command: ";
+        cout << "\nTime " <<  Model::get_Instance().get_time()
+             << ": Enter command: ";
+        
         cin >> first_word;
 
         try
@@ -77,24 +93,43 @@ Controller::run()
             else if (Model::get_Instance().is_ship_present(first_word))
             {
                 cin >> second_word;
-                if ((s_command_it = ship_command_map.find(second_word)) ==
+                if ((ship_arg_it = ship_command_map.find(second_word)) ==
                     ship_command_map.end())
                 {
                     throw Error("Unrecognized command!");
                 }
-                (this->*(s_command_it->second))(Model::get_Instance().get_ship_ptr(first_word));
+                (this->*(ship_arg_it->second))(Model::get_Instance().
+                                                get_ship_ptr(first_word));
             }
-            // model command
-            else if ((m_command_it = model_command_map.find(first_word)) !=
-                     model_command_map.end())
+            // map command
+            else if ((view_arg_it = map_command_map.find(first_word)) !=
+                     map_command_map.end())
             {
-                (this->*(m_command_it->second))();
+                (this->*(view_arg_it->second))(map_ptr);
             }
-            // view command
-            else if ((v_command_it = view_command_map.find(first_word)) !=
-                     view_command_map.end())
+            // sailing command
+            else if ((view_arg_it = sailing_command_map.find(first_word)) !=
+                     sailing_command_map.end())
             {
-                (this->*(v_command_it->second))(view_ptr);
+                (this->*(view_arg_it->second))(sailing_ptr);
+            }
+            // bridge command
+            else if ((ship_arg_it = bridge_command_map.find(first_word)) !=
+                     bridge_command_map.end())
+            {
+                cin >> second_word;
+                if (!Model::get_Instance().is_ship_present(second_word))
+                {
+                    throw Error("Ship not found!");
+                }
+
+                (this->*(ship_arg_it->second))(Model::get_Instance().get_ship_ptr(second_word));
+            }
+            // no arg command
+            else if ((no_arg_it = no_arg_command_map.find(first_word)) !=
+                     no_arg_command_map.end())
+            {
+                (this->*(no_arg_it->second))();
             }
             else
             {
@@ -119,8 +154,6 @@ Controller::run()
         }
     }
 
-    // final clean-up before exiting
-    Model::get_Instance().detach(view_ptr);
     cout << "Done" << endl;
 }
 
@@ -128,6 +161,10 @@ Controller::run()
 void
 Controller::view_default(shared_ptr<View> view_ptr)
 {
+    if (view_ptr == nullptr)
+    {
+        throw Error("Map view is not open!");
+    }
     view_ptr->set_defaults();
 }
 
@@ -136,6 +173,11 @@ Controller::view_default(shared_ptr<View> view_ptr)
 void
 Controller::view_size(shared_ptr<View> view_ptr)
 {
+    if (view_ptr == nullptr)
+    {
+        throw Error("Map view is not open!");
+    }
+    
     int size;
     if (!(cin >> size))
     {
@@ -149,6 +191,11 @@ Controller::view_size(shared_ptr<View> view_ptr)
 void
 Controller::view_zoom(shared_ptr<View> view_ptr)
 {
+    if (view_ptr == nullptr)
+    {
+        throw Error("Map view is not open!");
+    }
+    
     double scale;
     if (!(cin >> scale))
     {
@@ -161,6 +208,11 @@ Controller::view_zoom(shared_ptr<View> view_ptr)
 void
 Controller::view_pan(shared_ptr<View> view_ptr)
 {
+    if (view_ptr == nullptr)
+    {
+        throw Error("Map view is not open!");
+    }
+    
     double x, y;
     if (!(cin >> x) || !(cin >> y))
     {
@@ -171,9 +223,12 @@ Controller::view_pan(shared_ptr<View> view_ptr)
 
 // tell View to draw the map
 void
-Controller::view_show(shared_ptr<View> view_ptr)
+Controller::view_show()
 {
-    view_ptr->draw();
+    for_each(view_container.begin(),
+             view_container.end(),
+             [](shared_ptr<View> view_ptr)
+             {view_ptr->draw();});
 }
 
 // have all objects describe themselves
@@ -325,6 +380,64 @@ Controller::ship_stop_attack(shared_ptr<Ship>ship_ptr)
     ship_ptr->stop_attack();
 }
 
+void Controller::open_map_view(std::shared_ptr<View> view_ptr)
+{
+    open_view(view_ptr, "Map view is already open!");
+}
+
+void
+Controller::close_map_view(std::shared_ptr<View> view_ptr)
+{
+    close_view(view_ptr, "Map view is not open!");
+}
+
+void
+Controller::open_sailing_view(std::shared_ptr<View> view_ptr)
+{
+    open_view(view_ptr, "Sailing data view is already open!");
+}
+
+void
+Controller::close_sailing_view(std::shared_ptr<View> view_ptr)
+{
+    close_view(view_ptr, "Sailing data view is already open!");
+}
+
+void
+Controller::open_bridge_view(std::shared_ptr<Ship> ship_ptr)
+{
+    auto it = bridge_map.find(ship_ptr->get_name());
+    
+    if (it != bridge_map.end())
+    {
+        throw Error("Bridge view is already open for that ship!");
+    }
+    
+    
+    shared_ptr<View> view_ptr(make_shared<Bridge_View>(ship_ptr->get_name(), ship_ptr->get_location(), ship_ptr->get_heading(), ship_ptr->is_afloat()));
+    
+    Model::get_Instance().attach(view_ptr);
+    bridge_map[ship_ptr->get_name()] = view_ptr;
+    view_container.push_back(view_ptr);
+}
+
+void
+Controller::close_bridge_view(shared_ptr<Ship> ship_ptr)
+{
+    auto it = bridge_map.find(ship_ptr->get_name());
+    
+    if (it == bridge_map.end())
+    {
+        throw Error("Bridge view for that ship is not open!");
+    }
+    
+    Model::get_Instance().detach(it->second);
+    bridge_map.erase(it);
+    view_container.erase(find(view_container.begin(),
+                              view_container.end(),
+                              it->second));
+}
+
 double
 Controller::receive_and_check_speed()
 {
@@ -362,4 +475,36 @@ Controller::receive_and_check_ship()
         throw Error("Ship not found!");
     }
     return name;
+}
+
+void
+Controller::open_view(shared_ptr<View> view_ptr, const string& error)
+{
+    auto it = find(view_container.begin(),
+                   view_container.end(),
+                   view_ptr);
+    
+    if (it != view_container.end())
+    {
+        throw Error(error.c_str());
+    }
+    
+    Model::get_Instance().attach(view_ptr);
+    view_container.push_back(view_ptr);
+}
+
+void
+Controller::close_view(shared_ptr<View> view_ptr, const string& error)
+{
+    auto it = find(view_container.begin(),
+                   view_container.end(),
+                   view_ptr);
+    
+    if (it == view_container.end())
+    {
+        throw Error(error.c_str());
+    }
+    
+    Model::get_Instance().detach(view_ptr);
+    view_container.erase(it);
 }

@@ -122,6 +122,10 @@ class Ship : public Sim_object
       // receive a hit from an attacker
       virtual void receive_hit(int, std::shared_ptr<Ship>);
     
+      // return heading of the ship
+      double get_heading()
+          {return track_base.get_course();}
+    
   protected:
       double get_maximum_speed() const
           {return maximum_speed;}

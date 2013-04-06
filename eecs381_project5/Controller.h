@@ -10,6 +10,7 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <vector>
 
 class View;
 class Ship;
@@ -30,11 +31,11 @@ class Controller
 
   private:
       // command functions
-      void view_default(std::shared_ptr<View> );
-      void view_size(std::shared_ptr<View> );
-      void view_zoom(std::shared_ptr<View> );
-      void view_pan(std::shared_ptr<View> );
-      void view_show(std::shared_ptr<View> );
+      void view_default(std::shared_ptr<View>);
+      void view_size(std::shared_ptr<View>);
+      void view_zoom(std::shared_ptr<View>);
+      void view_pan(std::shared_ptr<View>);
+      void view_show();
       void model_status();
       void model_go();
       void model_create();
@@ -48,19 +49,34 @@ class Controller
       void ship_refuel(std::shared_ptr<Ship>);
       void ship_stop(std::shared_ptr<Ship>);
       void ship_stop_attack(std::shared_ptr<Ship>);
+      void open_map_view(std::shared_ptr<View>);
+      void close_map_view(std::shared_ptr<View>);
+      void open_sailing_view(std::shared_ptr<View>);
+      void close_sailing_view(std::shared_ptr<View>);
+      void open_bridge_view(std::shared_ptr<Ship>);
+      void close_bridge_view(std::shared_ptr<Ship>);
 
-      // error check functions
+      // error check functions and helpers
       double receive_and_check_speed();
       std::string receive_and_check_island();
       std::string receive_and_check_ship();
-     
-      // maps for ship and model/view commands
-      std::map<std::string,
-               void (Controller::*)(std::shared_ptr<Ship>)> ship_command_map;
-      std::map<std::string,
-               void (Controller::*)()> model_command_map;
-      std::map<std::string,
-               void (Controller::*)(std::shared_ptr<View>)> view_command_map;
+      void open_view(std::shared_ptr<View>, const std::string &);
+      void close_view(std::shared_ptr<View>, const std::string &);
+    
+      // maps for ship, model, view commands
+      std::map<std::string, void (Controller::*)(std::shared_ptr<Ship>)>
+          ship_command_map;
+      std::map<std::string, void (Controller::*)(std::shared_ptr<View>)>
+          map_command_map;
+      std::map<std::string, void (Controller::*)(std::shared_ptr<View>)>
+          sailing_command_map;
+      std::map<std::string, void (Controller::*)(std::shared_ptr<Ship>)>
+          bridge_command_map;
+      std::map<std::string, void (Controller::*)()> no_arg_command_map;
+    
+      // map of views
+      std::vector<std::shared_ptr<View>> view_container;
+      std::map<std::string, std::shared_ptr<View>> bridge_map;
 };
-        
+
 #endif

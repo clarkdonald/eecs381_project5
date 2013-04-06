@@ -183,6 +183,15 @@ Model::update()
 void
 Model::attach(shared_ptr<View> view_ptr)
 {
+    auto it = find(view_array.begin(),
+                   view_array.end(),
+                   view_ptr);
+    
+    if (it != view_array.end())
+    {
+        throw Error("Map view is already open!");
+    }
+    
     // insert view into container of view pointers
     view_array.push_back(view_ptr);
 
@@ -196,6 +205,15 @@ Model::attach(shared_ptr<View> view_ptr)
 void
 Model::detach(shared_ptr<View> view_ptr)
 {
+    auto it = find(view_array.begin(),
+                   view_array.end(),
+                   view_ptr);
+    
+    if (it == view_array.end())
+    {
+        throw Error("Map view is not open!");
+    }
+    
     view_array.erase(find(view_array.begin(), view_array.end(), view_ptr));
 }
 
