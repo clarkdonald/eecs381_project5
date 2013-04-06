@@ -413,8 +413,7 @@ Controller::open_bridge_view(std::shared_ptr<Ship> ship_ptr)
         throw Error("Bridge view is already open for that ship!");
     }
     
-    
-    shared_ptr<View> view_ptr(make_shared<Bridge_View>(ship_ptr->get_name(), ship_ptr->get_location(), ship_ptr->get_heading(), ship_ptr->is_afloat()));
+    shared_ptr<View> view_ptr(make_shared<Bridge_View>(ship_ptr->get_name(), ship_ptr->get_location(), ship_ptr->get_heading(), !ship_ptr->is_afloat()));
     
     Model::get_Instance().attach(view_ptr);
     bridge_map[ship_ptr->get_name()] = view_ptr;

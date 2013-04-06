@@ -50,8 +50,8 @@ Map_View::draw()
     grid.resize(size, vector<string>(size, ". "));
     
     cout << "Display size: " << size
-    << ", scale: " <<  scale
-    << ", origin: " <<  origin << endl;
+         << ", scale: " <<  scale
+         << ", origin: " <<  origin << endl;
     
     // place objects into grid
     list<string> outside_members;
@@ -317,6 +317,10 @@ Bridge_View::update_location(const std::string& name_, Point location_)
         {
             it->second = location_;
         }
+        else
+        {
+            name_location_map[name_] = location_;
+        }
     }
 }
 
@@ -378,18 +382,23 @@ Bridge_View::draw()
                  name_location_map.end(),
                  [this, &grid](pair<string, Point> obj)
                  {
-                     int x;
+                     double distance = cartesian_distance(ownship.location, obj.second);
                      
-                     // place object into grid if in range
-                     if (get_x_coordinate(x, calc_angle(obj.second)))
+                     if (distance <= 20. && distance >= 0.005)
                      {
-                         if (grid[x] == ". ")
+                         int x;
+                         
+                         // place object into grid if in range
+                         if (get_x_coordinate(x, calc_angle(obj.second)))
                          {
-                             grid[x] = obj.first.substr(0,2);
-                         }
-                         else
-                         {
-                             grid[x] = "* ";
+                             if (grid[x] == ". ")
+                             {
+                                 grid[x] = obj.first.substr(0,2);
+                             }
+                             else
+                             {
+                                 grid[x] = "**";
+                             }
                          }
                      }
                  });
@@ -400,7 +409,7 @@ Bridge_View::draw()
             cout << "     . . . . . . . . . . . . . . . . . . ."
                  << endl;
         }
-        
+        cout << "     ";
         for (int i = 0; i < x_size; ++i)
         {
             cout << grid[i];
@@ -410,20 +419,20 @@ Bridge_View::draw()
     }
     
     // print x-coordinate axis values
-    double axis = origin;
+    int axis = static_cast<int>(origin);
     for (int i = 0; i < x_size; i += 3)
     {
         cout << setw(6) << axis;
-        axis += 3*scale;
+        axis += 3*static_cast<int>(scale);
     }
     cout << endl;
 }
 
 bool
-Bridge_View::get_x_coordinate(int &ix, double location)
+Bridge_View::get_x_coordinate(int &ix, double angle)
 {
     // adjust with origin and scale
-    double delta_x = (location - origin) / scale;
+    double delta_x = (angle - origin) / scale;
     
     // truncate delta x to integer after taking the floor
     // floor function will produce integer
@@ -453,7 +462,7 @@ Bridge_View::calc_angle(Point other)
     {
         angle += 360.;
     }
-    else if (angle > -180.)
+    else if (angle > 180.)
     {
         angle -= 360.;
     }
