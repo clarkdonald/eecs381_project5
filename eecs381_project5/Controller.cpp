@@ -41,8 +41,8 @@ Controller::Controller()
     sailing_command_map["close_sailing_view"] = &Controller::close_sailing_view;
     
     // populate the functions for bridge
-    bridge_command_map["open_bridge_view"] = &Controller::open_bridge_view;
-    bridge_command_map["close_bridge_view"] = &Controller::close_bridge_view;
+    no_arg_command_map["open_bridge_view"] = &Controller::open_bridge_view;
+    no_arg_command_map["close_bridge_view"] = &Controller::close_bridge_view;
 
     // populate the functions needing no args
     no_arg_command_map["show"] = &Controller::view_show;
@@ -57,7 +57,6 @@ Controller::~Controller()
     ship_command_map.clear();
     no_arg_command_map.clear();
     map_command_map.clear();
-    bridge_command_map.clear();
     sailing_command_map.clear();
 }
 
@@ -113,18 +112,6 @@ Controller::run()
                      sailing_command_map.end())
             {
                 (this->*(view_arg_it->second))(sailing_ptr);
-            }
-            // bridge command
-            else if ((ship_arg_it = bridge_command_map.find(first_word)) !=
-                     bridge_command_map.end())
-            {
-                cin >> second_word;
-                if (!Model::get_Instance().is_ship_present(second_word))
-                {
-                    throw Error("Ship not found!");
-                }
-
-                (this->*(ship_arg_it->second))(Model::get_Instance().get_ship_ptr(second_word));
             }
             // no arg command
             else if ((no_arg_it = no_arg_command_map.find(first_word)) !=
@@ -405,14 +392,24 @@ Controller::close_sailing_view(std::shared_ptr<View> view_ptr)
 }
 
 void
-Controller::open_bridge_view(std::shared_ptr<Ship> ship_ptr)
+Controller::open_bridge_view()
 {
-    auto it = bridge_map.find(ship_ptr->get_name());
+    string name;
+    cin >> name;
+    
+    auto it = bridge_map.find(name);
     
     if (it != bridge_map.end())
     {
         throw Error("Bridge view is already open for that ship!");
     }
+    
+    if (!Model::get_Instance().is_ship_present(name))
+    {
+        throw Error("Ship not found!");
+    }
+    
+    shared_ptr<Ship> ship_ptr = Model::get_Instance().get_ship_ptr(name);
     
     shared_ptr<View> view_ptr(make_shared<Bridge_View>(ship_ptr->get_name(), ship_ptr->get_location(), ship_ptr->get_heading(), !ship_ptr->is_afloat()));
     
@@ -422,13 +419,21 @@ Controller::open_bridge_view(std::shared_ptr<Ship> ship_ptr)
 }
 
 void
-Controller::close_bridge_view(shared_ptr<Ship> ship_ptr)
+Controller::close_bridge_view()
 {
-    auto it = bridge_map.find(ship_ptr->get_name());
+    string name;
+    cin >> name;
+    
+    auto it = bridge_map.find(name);
     
     if (it == bridge_map.end())
     {
         throw Error("Bridge view for that ship is not open!");
+    }
+    
+    if (!Model::get_Instance().is_ship_present(name))
+    {
+        throw Error("Ship not found!");
     }
     
     Model::get_Instance().detach(it->second);

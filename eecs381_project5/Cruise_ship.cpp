@@ -46,11 +46,8 @@ Cruise_ship::update()
                 Ship::set_destination_position_and_speed(destination, cruise_speed);
                 next_island = Model::get_Instance().is_location_island(destination);
                 cruise_ship_state = CRUISING;
-                if (next_island->get_name() != first_island->get_name())
-                {
-                    cout << get_name() << " will visit "
-                         << next_island->get_name() << endl;
-                }
+                cout << get_name() << " will visit "
+                     << next_island->get_name() << endl;
                 break;
         }
     }

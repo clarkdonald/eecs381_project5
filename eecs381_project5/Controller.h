@@ -53,8 +53,8 @@ class Controller
       void close_map_view(std::shared_ptr<View>);
       void open_sailing_view(std::shared_ptr<View>);
       void close_sailing_view(std::shared_ptr<View>);
-      void open_bridge_view(std::shared_ptr<Ship>);
-      void close_bridge_view(std::shared_ptr<Ship>);
+      void open_bridge_view();
+      void close_bridge_view();
 
       // error check functions and helpers
       double receive_and_check_speed();
@@ -70,8 +70,6 @@ class Controller
           map_command_map;
       std::map<std::string, void (Controller::*)(std::shared_ptr<View>)>
           sailing_command_map;
-      std::map<std::string, void (Controller::*)(std::shared_ptr<Ship>)>
-          bridge_command_map;
       std::map<std::string, void (Controller::*)()> no_arg_command_map;
     
       // map of views
