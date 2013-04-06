@@ -80,23 +80,15 @@ Cruise_ship::describe() const
     cout << "\nCruise_ship ";
     Ship::describe();
     
-    if (is_docked() && cruise_ship_state != NOT_CRUISING)
+    if (cruise_ship_state == CRUISING)
     {
-        switch (cruise_ship_state)
-        {
-            case CRUISING:
-                cout << "On cruise to "
-                     << next_island->get_name()<< endl;
-                break;
-            case FIRST_UPDATE:
-            case SECOND_UPDATE:
-            case THIRD_UPDATE:
-                cout << "Waiting during cruise at "
-                     << get_docked_Island()->get_name() << endl;
-                break;
-            default:
-                break;
-        }
+        cout << "On cruise to "
+             << next_island->get_name()<< endl;
+    }
+    else if (is_docked() && cruise_ship_state != NOT_CRUISING)
+    {
+        cout << "Waiting during cruise at "
+             << get_docked_Island()->get_name() << endl;
     }
 }
 
