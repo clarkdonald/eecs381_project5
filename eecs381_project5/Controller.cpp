@@ -6,6 +6,7 @@
 #include "Island.h"
 #include "Ship_factory.h"
 #include "Utility.h"
+#include <algorithm>
 
 using namespace std;
 

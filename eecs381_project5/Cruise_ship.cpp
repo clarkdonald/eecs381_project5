@@ -46,6 +46,11 @@ Cruise_ship::update()
                 Ship::set_destination_position_and_speed(destination, cruise_speed);
                 next_island = Model::get_Instance().is_location_island(destination);
                 cruise_ship_state = CRUISING;
+                if (next_island->get_name() != first_island->get_name())
+                {
+                    cout << get_name() << " will visit "
+                         << next_island->get_name() << endl;
+                }
                 break;
         }
     }
@@ -53,8 +58,19 @@ Cruise_ship::update()
              cruise_ship_state == CRUISING)
     {
         dock(next_island);
-        visited_islands.push_back(next_island->get_location());
-        cruise_ship_state = FIRST_UPDATE;
+
+        if (Model::get_Instance().get_island_locations().size() ==
+            visited_islands.size())
+        {
+            cout << get_name() << " cruise is over at "
+                 << first_island->get_name() << endl;
+            cruise_ship_state = NOT_CRUISING;
+        }
+        else
+        {
+            visited_islands.push_back(next_island->get_location());
+            cruise_ship_state = FIRST_UPDATE;
+        }
     }
 }
 
@@ -144,6 +160,12 @@ Cruise_ship::get_next_island_location()
     
     vector<Point> island_locations = Model::get_Instance().
                                          get_island_locations();
+    
+    if (island_locations.size() == visited_islands.size())
+    {
+        next_destination = first_island->get_location();
+        return next_destination;
+    }
     
     // obtain shortest distance location out of the unvisited islands
     for_each(island_locations.begin(),
