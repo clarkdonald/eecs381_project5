@@ -157,7 +157,7 @@ class Bridge_View : public View
           double heading;
           bool sunk;
       } ownship;
-      std::map<std::string, Point>name_location_map;
+      std::map<std::string, Point> name_location_map;
     
       // Calculate the x-axis displacement
       // corresponding to the location parameter, using the

@@ -72,7 +72,7 @@ class Controller
           sailing_command_map;
       std::map<std::string, void (Controller::*)()> no_arg_command_map;
     
-      // map of views
+      // map of views for ordering and to map bridge views
       std::vector<std::shared_ptr<View>> view_container;
       std::map<std::string, std::shared_ptr<View>> bridge_map;
 };

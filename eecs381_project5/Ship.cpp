@@ -106,6 +106,7 @@ Ship::update()
                     Model::get_Instance().notify_location(get_name(),
                                                           track_base.
                                                               get_position());
+                    Model::get_Instance().notify_fuel(get_name(), fuel);
                     break;
                 case DOCKED:
                     cout << get_name() << " docked at "

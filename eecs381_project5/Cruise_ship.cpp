@@ -43,8 +43,10 @@ Cruise_ship::update()
                 break;
             case THIRD_UPDATE:
                 Point destination = get_next_island_location();
-                Ship::set_destination_position_and_speed(destination, cruise_speed);
-                next_island = Model::get_Instance().is_location_island(destination);
+                Ship::set_destination_position_and_speed(destination,
+                                                         cruise_speed);
+                next_island =
+                    Model::get_Instance().is_location_island(destination);
                 cruise_ship_state = CRUISING;
                 cout << get_name() << " will visit "
                      << next_island->get_name() << endl;
@@ -170,7 +172,8 @@ Cruise_ship::get_next_island_location()
                  // the island has not been visited yet
                  if (it == visited_islands.end())
                  {
-                     distance = cartesian_distance(next_island->get_location(), location);
+                     distance = cartesian_distance(next_island->get_location(),
+                                                   location);
                      
                      if (distance < min_distance)
                      {

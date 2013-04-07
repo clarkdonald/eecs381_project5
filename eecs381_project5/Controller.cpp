@@ -149,10 +149,13 @@ Controller::run()
 void
 Controller::view_default(shared_ptr<View> view_ptr)
 {
-    if (view_ptr == nullptr)
+    if (find(view_container.begin(),
+             view_container.end(),
+             view_ptr) == view_container.end())
     {
         throw Error("Map view is not open!");
     }
+    
     view_ptr->set_defaults();
 }
 
@@ -161,7 +164,9 @@ Controller::view_default(shared_ptr<View> view_ptr)
 void
 Controller::view_size(shared_ptr<View> view_ptr)
 {
-    if (view_ptr == nullptr)
+    if (find(view_container.begin(),
+             view_container.end(),
+             view_ptr) == view_container.end())
     {
         throw Error("Map view is not open!");
     }
@@ -179,7 +184,9 @@ Controller::view_size(shared_ptr<View> view_ptr)
 void
 Controller::view_zoom(shared_ptr<View> view_ptr)
 {
-    if (view_ptr == nullptr)
+    if (find(view_container.begin(),
+             view_container.end(),
+             view_ptr) == view_container.end())
     {
         throw Error("Map view is not open!");
     }
@@ -196,7 +203,9 @@ Controller::view_zoom(shared_ptr<View> view_ptr)
 void
 Controller::view_pan(shared_ptr<View> view_ptr)
 {
-    if (view_ptr == nullptr)
+    if (find(view_container.begin(),
+             view_container.end(),
+             view_ptr) == view_container.end())
     {
         throw Error("Map view is not open!");
     }
@@ -318,7 +327,8 @@ void
 Controller::ship_load_at(shared_ptr<Ship>ship_ptr)
 {
     string name = receive_and_check_island();
-    ship_ptr->set_load_destination(Model::get_Instance().get_island_ptr(name));
+    ship_ptr->
+        set_load_destination(Model::get_Instance().get_island_ptr(name));
 }
 
 // read Island name
@@ -327,7 +337,8 @@ void
 Controller::ship_unload_at(shared_ptr<Ship>ship_ptr)
 {
     string name = receive_and_check_island();
-    ship_ptr->set_unload_destination(Model::get_Instance().get_island_ptr(name));
+    ship_ptr->
+        set_unload_destination(Model::get_Instance().get_island_ptr(name));
 }
 
 // read Island name
@@ -388,7 +399,7 @@ Controller::open_sailing_view(std::shared_ptr<View> view_ptr)
 void
 Controller::close_sailing_view(std::shared_ptr<View> view_ptr)
 {
-    close_view(view_ptr, "Sailing data view is already open!");
+    close_view(view_ptr, "Sailing data view is not open!");
 }
 
 void
@@ -411,10 +422,13 @@ Controller::open_bridge_view()
     
     shared_ptr<Ship> ship_ptr = Model::get_Instance().get_ship_ptr(name);
     
-    shared_ptr<View> view_ptr(make_shared<Bridge_View>(ship_ptr->get_name(), ship_ptr->get_location(), ship_ptr->get_heading(), !ship_ptr->is_afloat()));
+    shared_ptr<View> view_ptr(make_shared<Bridge_View>(ship_ptr->get_name(),
+                                                       ship_ptr->get_location(),
+                                                       ship_ptr->get_heading(),
+                                                       !ship_ptr->is_afloat()));
     
     Model::get_Instance().attach(view_ptr);
-    bridge_map[ship_ptr->get_name()] = view_ptr;
+    bridge_map[name] = view_ptr;
     view_container.push_back(view_ptr);
 }
 
@@ -429,11 +443,6 @@ Controller::close_bridge_view()
     if (it == bridge_map.end())
     {
         throw Error("Bridge view for that ship is not open!");
-    }
-    
-    if (!Model::get_Instance().is_ship_present(name))
-    {
-        throw Error("Ship not found!");
     }
     
     Model::get_Instance().detach(it->second);

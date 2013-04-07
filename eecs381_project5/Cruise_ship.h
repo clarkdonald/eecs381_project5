@@ -12,7 +12,7 @@ class Cruise_ship : public Ship
 {
   public:
       // constructor to initialize
-      Cruise_ship(const std::string& name_, Point position_);
+      Cruise_ship(const std::string&, Point);
     
       // destructor
       ~Cruise_ship();

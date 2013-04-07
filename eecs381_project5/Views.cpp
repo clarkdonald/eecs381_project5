@@ -20,7 +20,7 @@ View::~View() {}
 /// MAP VIEW /////////////////////////////////////////////////////
 Map_View::Map_View() :
     size(25),
-    scale(2.0),
+    scale(2.),
     origin(Point(-10.,-10.))
 {}
 
@@ -151,7 +151,7 @@ Map_View::set_size(int size_)
 void
 Map_View::set_scale(double scale_)
 {
-    if (scale_ <= 0.0)
+    if (scale_ <= 0.)
     {
         throw Error("New map scale must be positive!");
     }
@@ -169,7 +169,7 @@ void
 Map_View::set_defaults()
 {
     size   = 25;
-    scale  = 2.0;
+    scale  = 2.;
     origin = Point(-10.,-10.);
 }
 
@@ -219,7 +219,7 @@ Sailing_View::update_fuel(const std::string& name, double fuel)
     }
     else
     {
-        ship_data_map[name] = {fuel,0.0,0.0};
+        ship_data_map[name] = {fuel,0.,0.};
     }
 }
 
@@ -234,7 +234,7 @@ Sailing_View::update_speed(const std::string& name, double speed)
     }
     else
     {
-        ship_data_map[name] = {0.0,speed,0.0};
+        ship_data_map[name] = {0.,speed,0.};
     }
 }
 
@@ -249,7 +249,7 @@ Sailing_View::update_course(const std::string& name, double course)
     }
     else
     {
-        ship_data_map[name] = {0.0,0.0,course};
+        ship_data_map[name] = {0.,0.,course};
     }
 }
 
@@ -359,13 +359,13 @@ Bridge_View::draw()
 {
     if (ownship.sunk)
     {
-        cout << "Bridge view from " << ownship.name << " position "
-             << ownship.location << " heading "
-             << ownship.heading << endl;
+        cout << "Bridge view from " << ownship.name
+             << " sunk at " << ownship.location << endl;
         
         for (int i = 0; i < y_size; ++i)
         {
-            cout << "w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-" << endl;
+            cout << "     w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-w-"
+                 << endl;
         }
     }
     else
@@ -406,7 +406,7 @@ Bridge_View::draw()
         // print grid content to stdout
         for (int i = 0; i < y_size - 1; ++i)
         {
-            cout << "     . . . . . . . . . . . . . . . . . . ."
+            cout << "     . . . . . . . . . . . . . . . . . . . "
                  << endl;
         }
         cout << "     ";
@@ -414,7 +414,6 @@ Bridge_View::draw()
         {
             cout << grid[i];
         }
-
         cout << endl;
     }
     
